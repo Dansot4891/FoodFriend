@@ -12,11 +12,11 @@ class _mkdeliveryState extends State<mkdelivery> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('맘마 배달 만들기'),
+        title: Text('맘마 배달 만들기', style: TextStyle(color: Colors.white),),
         centerTitle: true,
         backgroundColor: Colors.black,
         leading: IconButton(
-            icon: Icon(Icons.forward),
+            icon: Icon(Icons.forward, color: Colors.white,),
             onPressed: () {
               Navigator.pop(context);
             }),

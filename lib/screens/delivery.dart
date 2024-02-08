@@ -14,11 +14,11 @@ class _deliveryState extends State<delivery> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('FF 배달음식'),
+        title: Text('FF 배달음식', style: TextStyle(color: Colors.white),),
         centerTitle: true,
         backgroundColor: Colors.black,
         leading: IconButton(
-            icon: Icon(Icons.forward),
+            icon: Icon(Icons.forward, color: Colors.white,),
             onPressed: () {
               Navigator.pop(context);
             }),
@@ -34,17 +34,6 @@ class _deliveryState extends State<delivery> {
             padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
-                Subscreen(
-                    image: Image.asset('assets/pizza.jfif', width:ratio.width* 140, height: ratio.height*140),
-                    text1: Text('피자 먹을래??', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,)),
-                    text2: Text('현재 인원 : 1/3', style: TextStyle(fontSize: 14)),
-                    text3: Text('음식 종류 : 양식', style: TextStyle(fontSize: 14)),
-                    text4: Text('시간 : 11:00 ~ 12:00',
-                        style: TextStyle(fontSize: 14)),
-                    text6: Text('픽업 장소 : 가천대 1번 출구', style: TextStyle(fontSize: 14)),
-                    text5: Text('참가'),
-                    color: Colors.black),
-                Divider(thickness: 1.5),
                 Subscreen(
                     image:
                         Image.asset('assets/burger.jfif', width: ratio.width*150, height: ratio.height*150),

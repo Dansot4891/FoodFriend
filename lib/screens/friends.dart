@@ -6,9 +6,14 @@ class Friends extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('친구'),
+        title: Text('친구', style: TextStyle(color: Colors.white),),
         centerTitle: true,
         backgroundColor: Colors.black,
+        leading: IconButton(
+            icon: Icon(Icons.forward, color: Colors.white,),
+            onPressed: () {
+              Navigator.pop(context);
+            })
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,9 +61,10 @@ class Friends extends StatelessWidget {
             );
                   },
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text('친구추가'),
-                      Icon(Icons.add)
+                      Text('친구추가', style: TextStyle(color: Colors.white),),
+                      Icon(Icons.add, color: Colors.white,)
                     ],
                   ),
                   style: ElevatedButton.styleFrom(

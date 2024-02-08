@@ -3,14 +3,12 @@ import 'package:food_friend/main.dart';
 
 class Mainscreen extends StatelessWidget {
   Mainscreen({
-    // required this.image,
     required this.text1,
     required this.text2,
     required this.text3,
     required this.text4,
   });
 
-  // final Widget image;
   final Widget text1;
   final Widget text2;
   final Widget text3;

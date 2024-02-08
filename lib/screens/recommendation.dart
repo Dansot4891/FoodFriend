@@ -24,6 +24,7 @@ class _recommendationState extends State<recommendation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text('음식 추천을 추천해드립니다!', style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.black,
         centerTitle: true,
