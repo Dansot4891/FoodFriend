@@ -123,13 +123,11 @@ class _LoginState extends State<Login> {
   void getData() async {
     List<FFUser> users = await getFireModels();
     bool loginState = false;
-    print(_idController.text);
-    print(_pwController.text);
     if (_formkey.currentState!.validate()) {
       for (var user in users) {
         if (_idController.text == user.id && _pwController.text == user.password) {
           loginState = true;
-          Get.to(() => Home(), arguments: [user.id,user.dep]);
+          Get.to(() => Home(), arguments: [user.name,user.dep]);
           break;
         }
       }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 
 class FFUser {
   final String id;
@@ -39,11 +40,12 @@ class Union{
   final String type;
   final String title;
   final String max;
-  final String number;
+  String number;
   final String time;
+  final String place;
   
 
-  Union({required this.type, required this.title, required this.max, required this.number, required this.time});
+  Union({required this.type, required this.title, required this.max, required this.number, required this.time, required this.place});
 
   factory Union.fromJson(Map<String, dynamic> json) {
     return Union(
@@ -52,6 +54,7 @@ class Union{
       max: json["max"],
       number: json["number"],
       time: json["time"],
+      place: json["place"],
     );
   }
   Map<String, dynamic> toJson() {
@@ -61,6 +64,7 @@ class Union{
       "max": max,
       "number": number,
       "time": time,
+      "place": place,
     };
   }
   Union.fromQuerySnapshot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot)
@@ -69,5 +73,6 @@ class Union{
         title= snapshot["title"],
         max= snapshot["max"],
         number= snapshot["number"],
-        time= snapshot["time"];
+        time= snapshot["time"],
+        place= snapshot["place"];
 }

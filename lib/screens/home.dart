@@ -13,6 +13,7 @@ import 'package:food_friend/screens/recommendation.dart';
 import 'package:food_friend/widget/widget.dart';
 import 'package:get/get.dart';
 
+List<Mainscreen> homeData = [];
 
 class Home extends StatefulWidget {
   @override
@@ -21,87 +22,14 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final List<String> allCategories = ['일식', '양식', '한식', '중식'];
-    
-  String username = Get.arguments[0];
-  String userdep = Get.arguments[1];
-  
+  final String username = Get.arguments[0];
+  final String userdep = Get.arguments[1];
+
   Map<String, List<Mainscreen>> categoryToFoodMap = {
-    '일식': [
-      // Mainscreen(
-      //   image: Image.asset('assets/hosikdang.jfif', width:ratio.width* 125, height:ratio.height* 125),
-      //   text1: Text('점심 호식당 가실분?', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,)),
-      //   text2: Text('현재 인원 : 1/3', style: TextStyle(fontSize: 14)),
-      //   text3: Text('시간 : 11:00 ~ 12:00', style: TextStyle(fontSize: 14)),
-      //   text4: Text('참가',style: TextStyle(color: Colors.white),),
-      //   color: Colors.black,
-      // ),
-      // Mainscreen(
-      //   image: Image.asset('assets/Dongas.jfif', width: ratio.width*120, height:ratio.height* 120),
-      //   text1: Text('태돈 가실분 있나여?', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,)),
-      //   text2: Text('현재 인원 : 1/2', style: TextStyle(fontSize: 14)),
-      //   text3: Text('시간 : 14:00 ~ 15:00', style: TextStyle(fontSize: 14)),
-      //   text4: Text('참가',style: TextStyle(color: Colors.white),),
-      //   color: Colors.black,
-      // ),
-    ],
-    '양식': [
-      // Mainscreen(
-      //   image: Image.asset('assets/pizza.jfif', width: ratio.width*120, height:ratio.height* 120),
-      //   text1: Text('2인 피자 ㄲ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,)),
-      //   text2: Text('현재 인원 : 1/2', style: TextStyle(fontSize: 14)),
-      //   text3: Text('시간 : 14:00 ~ 15:00', style: TextStyle(fontSize: 14)),
-      //   text4: Text('참가',style: TextStyle(color: Colors.white),),
-      //   color: Colors.black,
-      // ),
-      // Mainscreen(
-      //   image: Image.asset('assets/burger.jfif', width: ratio.width*120, height:ratio.height* 120),
-      //   text1: Text('햄버거 땡기는 사람?', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,)),
-      //   text2: Text('현재 인원 : 1/3', style: TextStyle(fontSize: 14)),
-      //   text3: Text('시간 : 17:00 ~ 18:00', style: TextStyle(fontSize: 14)),
-      //   text4: Text('참가',style: TextStyle(color: Colors.white),),
-      //   color: Colors.black,
-      // ),
-    ],
-    '한식': [
-      // Mainscreen(
-      //   image: Image.asset('assets/sudae.jfif', width:ratio.width* 120, height:ratio.height* 120),
-      //   text1: Text('해장 순대국', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,)),
-      //   text2: Text('현재 인원 : 1/4', style: TextStyle(fontSize: 14)),
-      //   text3: Text('시간 : 10:00 ~ 11:00', style: TextStyle(fontSize: 14)),
-      //   text4: Text('참가',style: TextStyle(color: Colors.white),),
-      //   color: Colors.black,
-      // ),
-      Mainscreen(
-        text1: Text('신의 한컵 ㄱㄱ?', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,)),
-        text2: Text('현재 인원 : ??', style: TextStyle(fontSize: 14)),
-        text3: Text('시간 : 11:00 ~ 12:00', style: TextStyle(fontSize: 14)),
-        text4: Text('참가',style: TextStyle(color: Colors.white),),
-        color: Colors.black,
-      ),
-      Mainscreen(
-          text1: Text('밥버거에 라면 ㄱ?', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,)),
-          text2: Text('현재 인원 : 1/3', style: TextStyle(fontSize: 14)),
-          text3: Text('시간 : 17:30 ~ 18:30', style: TextStyle(fontSize: 14)),
-          text4: Text('참가',style: TextStyle(color: Colors.white),),
-          color: Colors.black),
-    ],
-    '중식': [
-      // Mainscreen(
-      //   image: Image.asset('assets/joong.jfif', width: ratio.width*120, height:ratio.height* 120),
-      //   text1: Text('중국집 드실분?', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,)),
-      //   text2: Text('현재 인원 : ??', style: TextStyle(fontSize: 14)),
-      //   text3: Text('시간 : 11:00 ~ 12:00', style: TextStyle(fontSize: 14)),
-      //   text4: Text('참가',style: TextStyle(color: Colors.white),),
-      //   color: Colors.black,
-      // ),
-      // Mainscreen(
-      //     image: Image.asset('assets/chinaspoon.jfif', width: ratio.width*125, height:ratio.height* 125),
-      //     text1: Text('중국집 땡기시는 분?', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,)),
-      //     text2: Text('현재 인원 : ??', style: TextStyle(fontSize: 14)),
-      //     text3: Text('시간 : 13:00 ~ 14:00', style: TextStyle(fontSize: 14)),
-      //     text4: Text('참가',style: TextStyle(color: Colors.white),),
-      //     color: Colors.black),
-    ],
+    '일식': [],
+    '양식': [],
+    '한식': [],
+    '중식': [],
   };
 
   String selectedCategory = '한식';
@@ -111,16 +39,22 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        title: Text('FF에 오신걸 환영합니다!', style: TextStyle(color: Colors.white),),
+        title: Text(
+          'FF에 오신걸 환영합니다!',
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         backgroundColor: Colors.black,
         actions: [
           IconButton(
-              icon: Icon(Icons.forward, color: Colors.white,),
+              icon: Icon(
+                Icons.forward,
+                color: Colors.white,
+              ),
               onPressed: () {
                 showDialog<void>(
                   context: context,
-                  barrierDismissible: true, // 다이얼로그 이외의 바탕 누르면 꺼지도록 설정
+                  barrierDismissible: true,
                   builder: (BuildContext context) {
                     return AlertDialog(
                       title: Text('로그인화면'),
@@ -174,7 +108,6 @@ class _HomeState extends State<Home> {
               ),
               accountName: Text(
                 username,
-                // '임명우',
                 style: TextStyle(color: Colors.black),
               ),
               accountEmail: Text(
@@ -237,8 +170,10 @@ class _HomeState extends State<Home> {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(getBackgroundImage(selectedCategory)),
-                fit: BoxFit.cover,
+                image: AssetImage(
+                  getBackgroundImage(selectedCategory),
+                ),
+                fit: BoxFit.fill,
               ),
             ),
           ),
@@ -246,45 +181,53 @@ class _HomeState extends State<Home> {
             padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
-                DropdownButton<String>(
-                  value: selectedCategory,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedCategory = newValue!;
-                    });
-                  },
-                  items: allCategories.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value,
-                          style: TextStyle(fontSize: 16, color: Colors.black)),
-                    );
-                  }).toList(),
-                  hint: Text('음식 카테고리 선택'),
-                  
-                ),
-                SizedBox(height:ratio.height* 20),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: categoryToFoodMap[selectedCategory]!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Column(
-                        children: [
-                          Card(
-                            color: Colors.white,
-                            elevation: 5,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: categoryToFoodMap[selectedCategory]![index],
-                          ),
-                          Divider(
-                            thickness: 1.5,
+                Center(
+                  child: DropdownButton<String>(
+                    value: selectedCategory,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedCategory = newValue!;
+                      });
+                    },
+                    items: allCategories.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          "             " + value,
+                          style: TextStyle(
+                            fontSize: 16,
                             color: Colors.black,
                           ),
-                        ],
+                          textAlign: TextAlign.right,
+                        ),
                       );
-                    },
+                    }).toList(),
+                    hint: Text('음식 카테고리 선택'),
+                  ),
+                ),
+                SizedBox(height: ratio.height * 20),
+                Expanded(
+                  child: FutureBuilder(
+                    future: resultData(),
+                    builder: ((context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView(
+                            children: List.generate(
+                                homeData.length, (index) => homeData[index]));
+                      } else if (snapshot.hasError) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "${snapshot.error}",
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        );
+                      } else {
+                        return ListView(
+                            children: List.generate(
+                                homeData.length, (index) => homeData[index]));
+                      }
+                    }),
                   ),
                 ),
               ],
@@ -298,30 +241,37 @@ class _HomeState extends State<Home> {
   String getBackgroundImage(String category) {
     switch (category) {
       case '일식':
-        return 'assets/japanback.jpg';
+        return 'assets/japanbg.jpg';
       case '양식':
         return 'assets/westback.jfif';
       case '한식':
         return 'assets/koreaback.jpg';
       case '중식':
-        return 'assets/chinaback2.jpg';
+        return 'assets/chinaback.jpg';
       default:
         return 'assets/background.jpg';
     }
   }
 
-  void getData() async {
+  Future<void> resultData() async {
     List<Union> unions = await getFireUnion();
-      for (var union in unions) {
-        if(union.type != selectedCategory){
-          unions.remove(union);
-        }
+    List<Union> filterData = [];
+    for (var union in unions) {
+      if (union.type == selectedCategory) {
+        filterData.add(union);
       }
-      for (var union in unions) {
-        if(union.type != selectedCategory){
-          unions.remove(union);
-        }
-      }
+    }
+
+    List<Mainscreen> data = [];
+    for (var union in filterData) {
+      data.add(Mainscreen(
+          text1: Text(union.title, style: TextStyle(fontSize: 20),),
+          text2: Text(
+            "인원 : " + union.max + " / " + union.number, style: TextStyle(fontSize: 14),
+          ),
+          text3: Text("시간 : " + union.time, style: TextStyle(fontSize: 14),),
+          text4: Text("장소 : " + union.place, style: TextStyle(fontSize: 14),)));
+    }
+    homeData = data;
   }
 }
-

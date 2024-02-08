@@ -242,7 +242,7 @@ class _signupState extends State<signup> {
     String userid = _idController.text;
     String userpw = _pwController.text;
     String username = _nameController.text;
-    String usersex = _sex == Sex.male ? 'male' : 'femail';
+    String usersex = _sex == Sex.male ? '남자' : '여자';
     String userdep = _depController.text;
     List<FFUser> users = await getFireModels();
     bool overlap = false;

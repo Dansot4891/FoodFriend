@@ -8,7 +8,6 @@ class Mainscreen extends StatelessWidget {
     required this.text2,
     required this.text3,
     required this.text4,
-    required this.color,
   });
 
   // final Widget image;
@@ -16,7 +15,7 @@ class Mainscreen extends StatelessWidget {
   final Widget text2;
   final Widget text3;
   final Widget text4;
-  final Color color;
+  int num = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +24,17 @@ class Mainscreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              text1,
-              text2,
-              text3,
-            ],
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                text1,
+                text2,
+                text3,
+                text4,
+              ],
+            ),
           ),
           SizedBox(width: ratio.width*20),
           ElevatedButton(
@@ -53,7 +56,7 @@ class Mainscreen extends StatelessWidget {
                       TextButton(
                         child: Text('확인'),
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          num += 1;
                         },
                       ),
                       TextButton(
@@ -67,9 +70,9 @@ class Mainscreen extends StatelessWidget {
                 },
               );
             },
-            child: text4,
+            child: Text("참가", style: TextStyle(color: Colors.white),),
             style: ElevatedButton.styleFrom(
-              primary: color,
+              primary: Colors.black,
             ),
           )
         ],

@@ -24,7 +24,7 @@ class _recommendationState extends State<recommendation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('음식 추천을 추천해드립니다!'),
+        title: Text('음식 추천을 추천해드립니다!', style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.black,
         centerTitle: true,
       ),
@@ -67,7 +67,7 @@ class _recommendationState extends State<recommendation> {
                 onPressed: () {
                   recommendFood();
                 },
-                child: Text('음식 추천 받기'),
+                child: Text('음식 추천 받기', style: TextStyle(color: Colors.white),),
                 style: ElevatedButton.styleFrom(
             primary: Colors.black,
           ),

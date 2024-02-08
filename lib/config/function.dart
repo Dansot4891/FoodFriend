@@ -52,3 +52,31 @@ String? depValidator(String? val) {
     return null;
   }
 }
+
+String? titleValidator(String? val) {
+    if (val!.isEmpty) {
+      return '제목을 입력해주세요.';
+    }
+    return null;
+}
+
+String? maxValidator(String? val) {
+  if (val!.isEmpty) {
+      return '인원 수를 설정해주세요.';
+    }
+    return null;
+}
+
+String? timeValidator(String? val) {
+  if (val!.isEmpty) {
+      return '시간대를 설정해주세요.';
+    }
+    return null;
+}
+
+String? placeValidator(String? val) {
+  if (val!.isEmpty) {
+      return '시간대를 설정해주세요.';
+    }
+    return null;
+}
