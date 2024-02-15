@@ -132,22 +132,6 @@ class _HomeState extends State<Home> {
                 Get.to(() => Mkgroup(), arguments: userid);
               },
             ),
-            // ListTile(
-            //   leading: Icon(Icons.motorcycle),
-            //   title: Text('맘마 배달'),
-            //   onTap: () {
-            //     Navigator.push(context,
-            //         MaterialPageRoute(builder: (context) => delivery()));
-            //   },
-            // ),
-            // ListTile(
-            //   leading: Icon(Icons.motorcycle_sharp),
-            //   title: Text('맘마 배달 생성'),
-            //   onTap: () {
-            //     Navigator.push(context,
-            //         MaterialPageRoute(builder: (context) => mkdelivery()));
-            //   },
-            // ),
             ListTile(
               leading: Icon(Icons.local_dining),
               title: Text('음식 추천'),
@@ -268,15 +252,34 @@ class _HomeState extends State<Home> {
     List<Mainscreen> data = [];
     for (var union in filterData) {
       data.add(Mainscreen(
-          text1: Text(union.title, style: TextStyle(fontSize: 20),),
-          text2: Text(
-            "인원 : " + union.max + " / " + union.number, style: TextStyle(fontSize: 14),
-          ),
-          text3: Text("시간 : " + union.time, style: TextStyle(fontSize: 14),),
-          text4: Text("장소 : " + union.place, style: TextStyle(fontSize: 14),),
+          text1: union.title,
+          text2: union.max,
+          text3: union.time,
+          text4: union.place,
           text5: '참가',
+          text6: union.number,
           onpressed: (){
-            
+            int num = int.parse(union.number) + 1;
+            if(num > int.parse(union.max)){
+              showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('인원 초과'),
+                  content: Text('인원이 다 찼습니다!'),
+                );
+              },
+            );
+
+            // 1초 후에 다이얼로그를 자동으로 닫음
+            Future.delayed(Duration(seconds: 1), () {
+              Navigator.of(context).pop();
+            });
+            }else{
+              String number = num.toString();
+              enterUnion(union.place, union.title, number);
+              Get.back();
+            }
           },
           ),);
     }

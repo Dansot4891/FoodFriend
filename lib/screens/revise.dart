@@ -22,6 +22,8 @@ class _ReviseGroupState extends State<ReviseGroup> {
     MyUnions();
   }
 
+  List<String> type = [];
+
   Future<void> deleteAndRefresh(String title) async {
     await deleteCollection('union', 'userid', myid, 'title', title);
     MyUnions();
@@ -34,6 +36,7 @@ class _ReviseGroupState extends State<ReviseGroup> {
     for (var union in unions) {
       if (union.userid == myid) {
         filteredUnions.add(union);
+        type.add(union.type);
       }
     }
 
@@ -41,23 +44,12 @@ class _ReviseGroupState extends State<ReviseGroup> {
     for (var union in filteredUnions) {
       data.add(
         Mainscreen(
-          text1: Text(
-            union.title,
-            style: TextStyle(fontSize: 20),
-          ),
-          text2: Text(
-            "인원 : " + union.max + " / " + union.number,
-            style: TextStyle(fontSize: 14),
-          ),
-          text3: Text(
-            "시간 : " + union.time,
-            style: TextStyle(fontSize: 14),
-          ),
-          text4: Text(
-            "장소 : " + union.place,
-            style: TextStyle(fontSize: 14),
-          ),
+          text1: union.title,
+          text2: union.max,
+          text3: union.time,
+          text4: union.place,
           text5: "삭제",
+          text6: union.number,
           onpressed: () {
             deleteAndRefresh(union.title);
             setState(() {
@@ -97,8 +89,7 @@ class _ReviseGroupState extends State<ReviseGroup> {
         itemBuilder: (context, index) {
           return InkWell(
             onTap: (){
-              Get.to(() => UnionInfo(), arguments: [myid, myData[index]]);
-              print(myData[index]);
+              Get.to(() => UnionInfo(), arguments: [myid, myData[index], type[index]]);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -115,4 +106,7 @@ class _ReviseGroupState extends State<ReviseGroup> {
       ),
     );
   }
+
+  
+
 }

@@ -160,7 +160,6 @@ class _MkgroupState extends State<Mkgroup> {
     await _firestore.collection('union').doc().set(
       Union(type: type, title: title, max: max, number: '1', time: time, place: place, userid: userid).toJson());
     Navigator.pop(context);
-    // Get.to(() => Home(), arguments: userid);
   }
 }
 

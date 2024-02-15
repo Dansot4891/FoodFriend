@@ -76,7 +76,7 @@ String? timeValidator(String? val) {
 
 String? placeValidator(String? val) {
   if (val!.isEmpty) {
-      return '시간대를 설정해주세요.';
+      return '장소를 설정해주세요.';
     }
     return null;
 }

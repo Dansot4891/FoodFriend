@@ -8,14 +8,16 @@ class Mainscreen extends StatelessWidget {
     required this.text3,
     required this.text4,
     required this.text5,
+    required this.text6,
     required this.onpressed,
   });
 
-  final Widget text1;
-  final Widget text2;
-  final Widget text3;
-  final Widget text4;
+  final String text1;
+  final String text2;
+  final String text3;
+  final String text4;
   final String text5;
+  final String text6;
   final VoidCallback onpressed;
 
   @override
@@ -30,14 +32,26 @@ class Mainscreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                text1,
-                text2,
-                text3,
-                text4,
+                Text(
+                  text1,
+                  style: TextStyle(fontSize: 20),
+                ),
+                Text(
+                  "인원 : " + text2 + " / " + text6,
+                  style: TextStyle(fontSize: 14),
+                ),
+                Text(
+                  "시간 : " + text3,
+                  style: TextStyle(fontSize: 14),
+                ),
+                Text(
+                  "장소 : " + text4,
+                  style: TextStyle(fontSize: 14),
+                ),
               ],
             ),
           ),
-          SizedBox(width: ratio.width*20),
+          SizedBox(width: ratio.width * 20),
           ElevatedButton(
             onPressed: () {
               showDialog<void>(
@@ -54,10 +68,7 @@ class Mainscreen extends StatelessWidget {
                       ),
                     ),
                     actions: [
-                      TextButton(
-                        child: Text('확인'),
-                        onPressed: onpressed
-                      ),
+                      TextButton(child: Text('확인'), onPressed: onpressed),
                       TextButton(
                         child: Text('취소'),
                         onPressed: () {
@@ -69,7 +80,10 @@ class Mainscreen extends StatelessWidget {
                 },
               );
             },
-            child: Text(text5, style: TextStyle(color: Colors.white),),
+            child: Text(
+              text5,
+              style: TextStyle(color: Colors.white),
+            ),
             style: ElevatedButton.styleFrom(
               primary: Colors.black,
             ),
