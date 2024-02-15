@@ -7,13 +7,16 @@ class Mainscreen extends StatelessWidget {
     required this.text2,
     required this.text3,
     required this.text4,
+    required this.text5,
+    required this.onpressed,
   });
 
   final Widget text1;
   final Widget text2;
   final Widget text3;
   final Widget text4;
-  int num = 1;
+  final String text5;
+  final VoidCallback onpressed;
 
   @override
   Widget build(BuildContext context) {
@@ -39,23 +42,21 @@ class Mainscreen extends StatelessWidget {
             onPressed: () {
               showDialog<void>(
                 context: context,
-                barrierDismissible: true, // 다이얼로그 이외의 바탕 누르면 꺼지도록 설정
+                barrierDismissible: true,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('참가'),
+                    title: Text(text5),
                     content: SingleChildScrollView(
                       child: ListBody(
                         children: <Widget>[
-                          Text('참가하시겠습니까?'),
+                          Text(text5 + '하시겠습니까?'),
                         ],
                       ),
                     ),
                     actions: [
                       TextButton(
                         child: Text('확인'),
-                        onPressed: () {
-                          num += 1;
-                        },
+                        onPressed: onpressed
                       ),
                       TextButton(
                         child: Text('취소'),
@@ -68,7 +69,7 @@ class Mainscreen extends StatelessWidget {
                 },
               );
             },
-            child: Text("참가", style: TextStyle(color: Colors.white),),
+            child: Text(text5, style: TextStyle(color: Colors.white),),
             style: ElevatedButton.styleFrom(
               primary: Colors.black,
             ),

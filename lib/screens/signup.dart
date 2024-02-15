@@ -231,7 +231,7 @@ class _signupState extends State<signup> {
     return TextFormField(
       controller: _depController,
       decoration: const InputDecoration(
-        hintText: '학과를 입력해주세요.',
+        hintText: '학과를 입력해주세요. ex) 경영학과',
         border: OutlineInputBorder(),
       ),
       validator: depValidator,

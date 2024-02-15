@@ -19,8 +19,9 @@ class _MkgroupState extends State<Mkgroup> {
   TextEditingController _maxController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
   TextEditingController _placeController = TextEditingController();
-  final valueList = ['한식', '일식', '중식', '양식'];
+  final valueList = ['한식', '일식', '중식', '양식', '배달'];
 
+  final String userid = Get.arguments;
   String food = '한식';
 
   @override
@@ -157,13 +158,9 @@ class _MkgroupState extends State<Mkgroup> {
     String type = food;
 
     await _firestore.collection('union').doc().set(
-      Union(type: type, title: title, max: max, number: '1', time: time, place: place).toJson());
+      Union(type: type, title: title, max: max, number: '1', time: time, place: place, userid: userid).toJson());
     Navigator.pop(context);
-    // Navigator.push(
-    //       context,
-    //       MaterialPageRoute(builder: (context) => Home()),
-    //     );
-    // Get.offAll(() => Home());
+    // Get.to(() => Home(), arguments: userid);
   }
 }
 

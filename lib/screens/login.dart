@@ -127,7 +127,7 @@ class _LoginState extends State<Login> {
       for (var user in users) {
         if (_idController.text == user.id && _pwController.text == user.password) {
           loginState = true;
-          Get.to(() => Home(), arguments: [user.name,user.dep]);
+          Get.to(() => Home(), arguments: [user.name, user.dep, user.id]);
           break;
         }
       }

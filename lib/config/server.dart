@@ -28,3 +28,18 @@ Future<List<Union>> getFireUnion() async {
   }
   return unions;
 }
+
+Future<void> deleteCollection(String collectionName, String field1Name, dynamic value1, String field2Name, dynamic value2) async {
+  
+  CollectionReference collectionRef = FirebaseFirestore.instance.collection(collectionName);
+  
+  QuerySnapshot querySnapshot = await collectionRef.where(field1Name, isEqualTo: value1).where(field2Name, isEqualTo: value2).get();
+  
+  querySnapshot.docs.forEach((doc) {
+    doc.reference.delete();
+  });
+}
+
+Future<void> updateData() async {
+  
+}

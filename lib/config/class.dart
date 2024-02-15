@@ -43,9 +43,10 @@ class Union{
   String number;
   final String time;
   final String place;
+  final String userid;
   
 
-  Union({required this.type, required this.title, required this.max, required this.number, required this.time, required this.place});
+  Union({required this.type, required this.title, required this.max, required this.number, required this.time, required this.place, required this.userid});
 
   factory Union.fromJson(Map<String, dynamic> json) {
     return Union(
@@ -55,6 +56,7 @@ class Union{
       number: json["number"],
       time: json["time"],
       place: json["place"],
+      userid: json["userid"],
     );
   }
   Map<String, dynamic> toJson() {
@@ -65,6 +67,7 @@ class Union{
       "number": number,
       "time": time,
       "place": place,
+      "userid": userid,
     };
   }
   Union.fromQuerySnapshot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot)
@@ -74,5 +77,6 @@ class Union{
         max= snapshot["max"],
         number= snapshot["number"],
         time= snapshot["time"],
-        place= snapshot["place"];
+        place= snapshot["place"],
+        userid= snapshot["userid"];
 }

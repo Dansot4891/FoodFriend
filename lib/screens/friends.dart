@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:food_friend/config/server.dart';
 import 'package:food_friend/main.dart';
+import 'package:food_friend/config/class.dart';
 
 class Friends extends StatelessWidget {
+
+  List<FFUser> friends = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

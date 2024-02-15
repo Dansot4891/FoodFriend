@@ -10,6 +10,7 @@ import 'package:food_friend/screens/login.dart';
 import 'package:food_friend/screens/mkdelivery.dart';
 import 'package:food_friend/screens/mkgroup.dart';
 import 'package:food_friend/screens/recommendation.dart';
+import 'package:food_friend/screens/revise.dart';
 import 'package:food_friend/widget/widget.dart';
 import 'package:get/get.dart';
 
@@ -21,16 +22,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<String> allCategories = ['일식', '양식', '한식', '중식'];
+  final List<String> allCategories = ['일식', '양식', '한식', '중식', '배달'];
   final String username = Get.arguments[0];
   final String userdep = Get.arguments[1];
-
-  Map<String, List<Mainscreen>> categoryToFoodMap = {
-    '일식': [],
-    '양식': [],
-    '한식': [],
-    '중식': [],
-  };
+  final String userid = Get.arguments[2];
 
   String selectedCategory = '한식';
 
@@ -126,40 +121,46 @@ class _HomeState extends State<Home> {
               leading: Icon(Icons.person),
               title: Text('친구'),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Friends()));
+                Get.to(() => Friends(), arguments: userid);
               },
             ),
             ListTile(
               leading: Icon(Icons.food_bank_rounded),
               title: Text('맘마 생성'),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Mkgroup()));
+                print(userid);
+                Get.to(() => Mkgroup(), arguments: userid);
               },
             ),
-            ListTile(
-              leading: Icon(Icons.motorcycle),
-              title: Text('맘마 배달'),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => delivery()));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.motorcycle_sharp),
-              title: Text('맘마 배달 생성'),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => mkdelivery()));
-              },
-            ),
+            // ListTile(
+            //   leading: Icon(Icons.motorcycle),
+            //   title: Text('맘마 배달'),
+            //   onTap: () {
+            //     Navigator.push(context,
+            //         MaterialPageRoute(builder: (context) => delivery()));
+            //   },
+            // ),
+            // ListTile(
+            //   leading: Icon(Icons.motorcycle_sharp),
+            //   title: Text('맘마 배달 생성'),
+            //   onTap: () {
+            //     Navigator.push(context,
+            //         MaterialPageRoute(builder: (context) => mkdelivery()));
+            //   },
+            // ),
             ListTile(
               leading: Icon(Icons.local_dining),
               title: Text('음식 추천'),
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => recommendation()));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.food_bank_rounded),
+              title: Text('맘마 수정'),
+              onTap: () {
+                Get.to(() => ReviseGroup(), arguments: userid);
               },
             ),
           ],
@@ -248,6 +249,8 @@ class _HomeState extends State<Home> {
         return 'assets/koreaback.jpg';
       case '중식':
         return 'assets/chinaback.jpg';
+      case '배달':
+        return 'assets/deliveryback.jpg';
       default:
         return 'assets/background.jpg';
     }
@@ -270,7 +273,12 @@ class _HomeState extends State<Home> {
             "인원 : " + union.max + " / " + union.number, style: TextStyle(fontSize: 14),
           ),
           text3: Text("시간 : " + union.time, style: TextStyle(fontSize: 14),),
-          text4: Text("장소 : " + union.place, style: TextStyle(fontSize: 14),)));
+          text4: Text("장소 : " + union.place, style: TextStyle(fontSize: 14),),
+          text5: '참가',
+          onpressed: (){
+            
+          },
+          ),);
     }
     homeData = data;
   }
