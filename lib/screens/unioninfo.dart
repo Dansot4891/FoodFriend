@@ -247,7 +247,7 @@ class _UnionInfoState extends State<UnionInfo> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
-                        style: ElevatedButton.styleFrom(primary: Colors.black),
+                        style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
                         onPressed: () {
                           if (_formkey.currentState!.validate()) {
                             updateUnionByName(myid, myData.text1, newtitle.text,

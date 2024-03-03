@@ -85,7 +85,7 @@ class Mainscreen extends StatelessWidget {
               style: TextStyle(color: Colors.white),
             ),
             style: ElevatedButton.styleFrom(
-              primary: Colors.black,
+              backgroundColor: Colors.black,
             ),
           )
         ],

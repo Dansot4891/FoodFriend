@@ -43,7 +43,6 @@ Future<void> deleteCollection(String collectionName, String field1Name, dynamic 
 void updateUnionByName(String userid, String title, String newtitle, String max, String place, String time, String type) {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  // 'name' 필드를 기준으로 union 컬렉션에서 문서를 찾음
   firestore.collection('union')
     .where('userid', isEqualTo: userid).where('title', isEqualTo: title)
     .get()
@@ -69,7 +68,6 @@ void updateUnionByName(String userid, String title, String newtitle, String max,
 void enterUnion(String place, String title, String num) {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  // 'name' 필드를 기준으로 union 컬렉션에서 문서를 찾음
   firestore.collection('union')
     .where('place', isEqualTo: place).where('title', isEqualTo: title)
     .get()
@@ -87,3 +85,4 @@ void enterUnion(String place, String title, String num) {
       print('문서 찾기 실패: $error');
     });
 }
+

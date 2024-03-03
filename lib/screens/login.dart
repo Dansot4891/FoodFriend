@@ -72,7 +72,7 @@ class _LoginState extends State<Login> {
                                   child: Text('회원가입하기',
                                       style: TextStyle(color: Colors.white)),
                                   style: ElevatedButton.styleFrom(
-                                    primary: Colors.black,
+                                    backgroundColor: Colors.black,
                                   )),
                               SizedBox(
                                 width: ratio.width*30,
@@ -84,7 +84,7 @@ class _LoginState extends State<Login> {
                                 child: Text('  로그인  ',
                                     style: TextStyle(color: Colors.white)),
                                 style: ElevatedButton.styleFrom(
-                                  primary: Colors.black,
+                                  backgroundColor: Colors.black,
                                 ),
                               )
                             ],

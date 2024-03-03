@@ -138,7 +138,7 @@ class _MkgroupState extends State<Mkgroup> {
                 },
                 child: Text('만들기', style: TextStyle(color: Colors.white),),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.black,
+                  backgroundColor: Colors.black,
                 ),
               )
             ],

@@ -70,7 +70,7 @@ class _recommendationState extends State<recommendation> {
                 },
                 child: Text('음식 추천 받기', style: TextStyle(color: Colors.white),),
                 style: ElevatedButton.styleFrom(
-            primary: Colors.black,
+            backgroundColor: Colors.black,
           ),
               ),
             ],

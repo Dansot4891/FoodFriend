@@ -1,14 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_friend/config/class.dart';
-import 'package:food_friend/config/function.dart';
 import 'package:food_friend/config/server.dart';
 import 'package:food_friend/main.dart';
-import 'package:food_friend/screens/delivery.dart';
 import 'package:food_friend/screens/friends.dart';
 import 'package:food_friend/screens/login.dart';
-import 'package:food_friend/screens/mkdelivery.dart';
 import 'package:food_friend/screens/mkgroup.dart';
+import 'package:food_friend/screens/mypage.dart';
 import 'package:food_friend/screens/recommendation.dart';
 import 'package:food_friend/screens/revise.dart';
 import 'package:food_friend/widget/widget.dart';
@@ -119,16 +117,22 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               leading: Icon(Icons.person),
-              title: Text('친구'),
-              onTap: () {
-                Get.to(() => Friends(), arguments: userid);
+              title: Text('내 정보'),
+              onTap: () async {
+                List<FFUser> users = await getFireModels();
+                FFUser? mydata;
+                for (var user in users) {
+                  if (userid == user.id) {
+                    mydata = user;
+                  }
+                }
+                Get.to(() => MyPage(), arguments: mydata);
               },
             ),
             ListTile(
               leading: Icon(Icons.food_bank_rounded),
               title: Text('맘마 생성'),
               onTap: () {
-                print(userid);
                 Get.to(() => Mkgroup(), arguments: userid);
               },
             ),
@@ -251,37 +255,39 @@ class _HomeState extends State<Home> {
 
     List<Mainscreen> data = [];
     for (var union in filterData) {
-      data.add(Mainscreen(
+      data.add(
+        Mainscreen(
           text1: union.title,
           text2: union.max,
           text3: union.time,
           text4: union.place,
           text5: '참가',
           text6: union.number,
-          onpressed: (){
+          onpressed: () {
             int num = int.parse(union.number) + 1;
-            if(num > int.parse(union.max)){
+            if (num > int.parse(union.max)) {
               showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text('인원 초과'),
-                  content: Text('인원이 다 찼습니다!'),
-                );
-              },
-            );
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('인원 초과'),
+                    content: Text('인원이 다 찼습니다!'),
+                  );
+                },
+              );
 
-            // 1초 후에 다이얼로그를 자동으로 닫음
-            Future.delayed(Duration(seconds: 1), () {
-              Navigator.of(context).pop();
-            });
-            }else{
+              // 1초 후에 다이얼로그를 자동으로 닫음
+              Future.delayed(Duration(seconds: 1), () {
+                Navigator.of(context).pop();
+              });
+            } else {
               String number = num.toString();
               enterUnion(union.place, union.title, number);
               Get.back();
             }
           },
-          ),);
+        ),
+      );
     }
     homeData = data;
   }
