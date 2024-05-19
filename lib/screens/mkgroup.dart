@@ -1,19 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_friend/config/class.dart';
-import 'package:food_friend/config/function.dart';
+import 'package:food_friend/config/custom_dialog.dart';
+import 'package:food_friend/config/firebase_instance.dart';
+import 'package:food_friend/config/validator.dart';
 import 'package:food_friend/main.dart';
-import 'package:food_friend/screens/home.dart';
-import 'package:get/get.dart';
+import 'package:food_friend/widget/custom_textfield.dart';
 
-class Mkgroup extends StatefulWidget {
+class MakeGroupScreen extends ConsumerStatefulWidget {
   @override
-  State<Mkgroup> createState() => _MkgroupState();
+  MakeGroupScreenState createState() => MakeGroupScreenState();
 }
 
-class _MkgroupState extends State<Mkgroup> {
+class MakeGroupScreenState extends ConsumerState<MakeGroupScreen> {
   GlobalKey<FormState> gkey = GlobalKey<FormState>();
   TextEditingController _titleController = TextEditingController();
   TextEditingController _maxController = TextEditingController();
@@ -21,9 +22,9 @@ class _MkgroupState extends State<Mkgroup> {
   TextEditingController _placeController = TextEditingController();
   final valueList = ['한식', '일식', '중식', '양식', '배달'];
 
-  final String userid = Get.arguments;
   String food = '한식';
 
+  final inputFormatter = <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,95 +46,41 @@ class _MkgroupState extends State<Mkgroup> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 30,),
               Image.asset('assets/lunch.png'),
-              Container(
-                padding: EdgeInsets.all(30),
-                child: Form(
-                  key: gkey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        validator: titleValidator,
-                        controller: _titleController,
-                        autofocus: true,
-                        decoration: InputDecoration(labelText: '제목을 입력해주세요.'),
-                        keyboardType: TextInputType.text,
-                      ),
-                      TextFormField(
-                        validator: maxValidator,
-                        controller: _maxController,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        autofocus: true,
-                        decoration: InputDecoration(labelText: '인원을 설정해주세요'),
-                        keyboardType: TextInputType.text,
-                      ),
-                      TextFormField(
-                        validator: timeValidator,
-                        controller: _timeController,
-                        autofocus: true,
-                        decoration: InputDecoration(labelText: '시간대를 입력해주세요.'),
-                        keyboardType: TextInputType.text,
-                      ),
-                      TextFormField(
-                        validator: placeValidator,
-                        controller: _placeController,
-                        autofocus: true,
-                        decoration: InputDecoration(labelText: '만나실 장소를 입력해주세요.'),
-                        keyboardType: TextInputType.text,
-                      ),
-                      SizedBox(height: 20,),
-                      SizedBox(height:ratio.height* 30,),
-                      Text('선정하신 음식의 카테고리를 선택해주세요.',style: TextStyle(fontSize: 16),),
-                      DropdownButton(
-                        value: food,
-                        icon: Icon(Icons.keyboard_arrow_down),
-                        items: valueList.map((String val) {
-                          return DropdownMenuItem(
-                            value: val,
-                            child: Text(val),
-                            );
-                        }).toList(),
-                        onChanged: (String? val){
-                          setState(() {
-                            food = val!;
-                          });
-                        })
-                    ],
-                  ),
+              Form(
+                key: gkey,
+                child: Column(
+                  children: [
+                    CustomTextField(controller: _titleController, hintText: '제목을 입력해주세요.', validator: titleValidator,),
+                    CustomTextField(controller: _maxController, hintText: '최대 인원을 입력해주세요.', validator: maxValidator, inputFormatter: inputFormatter,),
+                    CustomTextField(controller: _timeController, hintText: '시간대를 입력해주세요.', validator: timeValidator,),
+                    CustomTextField(controller: _placeController, hintText: '만날 장소를 입력해주세요.', validator: placeValidator,),
+                    SizedBox(height:ratio.height* 30,),
+                    Text('선정하신 음식의 카테고리를 선택해주세요.',style: TextStyle(fontSize: 16),),
+                    DropdownButton(
+                      value: food,
+                      icon: Icon(Icons.keyboard_arrow_down),
+                      items: valueList.map((String val) {
+                        return DropdownMenuItem(
+                          value: val,
+                          child: Text(val),
+                          );
+                      }).toList(),
+                      onChanged: (String? val){
+                        setState(() {
+                          food = val!;
+                        });
+                      })
+                  ],
                 ),
               ),
               ElevatedButton(
                 onPressed: () {
                   if(gkey.currentState!.validate()){
-                    showDialog(
-                    context: context,
-                    builder: (BuildContext context){
-                      return AlertDialog(
-                        content: Text('맘마팀을 생성하시겠습니까?'),
-                        actions: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                            onPressed: (){
-                              makeGroup();
-                          },
-                          child: Text('예')),
-                          SizedBox(width: 10,),
-                          ElevatedButton(
-                            onPressed: (){
-                              Navigator.pop(context);
-                          },
-                          child: Text('아니오'))
-                            ],
-                          )
-                        ],
-                      );
-                    }
-                  );
+                    CustomDialog(context: context, title: '맘마팀을 생성하시겠습니까?', buttonText: '확인', buttonCount: 2, func: (){
+                      Navigator.pop(context);
+                    });
+                    //makeGroup();
                   }
                 },
                 child: Text('만들기', style: TextStyle(color: Colors.white),),
@@ -150,15 +97,14 @@ class _MkgroupState extends State<Mkgroup> {
 
   void makeGroup() async{
     
-    FirebaseFirestore _firestore = FirebaseFirestore.instance;
     String title = _titleController.text;
     String max = _maxController.text;
     String time = _timeController.text;
     String place = _placeController.text;
     String type = food;
 
-    await _firestore.collection('union').doc().set(
-      Union(type: type, title: title, max: max, number: '1', time: time, place: place, userid: userid).toJson());
+    await firestoreInstance.collection('union').doc().set(
+      Union(type: type, title: title, max: max, number: '1', time: time, place: place, userid: 'asd').toJson());
     Navigator.pop(context);
   }
 }

@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_friend/config/class.dart';
-import 'package:food_friend/config/server.dart';
+import 'package:food_friend/config/custom_dialog.dart';
+import 'package:food_friend/config/firebase_instance.dart';
 import 'package:food_friend/main.dart';
-import 'package:food_friend/screens/friends.dart';
+import 'package:food_friend/model/user_model.dart';
+import 'package:food_friend/provider/user_provider.dart';
 import 'package:food_friend/screens/login.dart';
 import 'package:food_friend/screens/mkgroup.dart';
 import 'package:food_friend/screens/mypage.dart';
@@ -14,21 +17,17 @@ import 'package:get/get.dart';
 
 List<Mainscreen> homeData = [];
 
-class Home extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   @override
-  State<Home> createState() => _HomeState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class _HomeState extends State<Home> {
+class HomeScreenState extends ConsumerState<HomeScreen> {
   final List<String> allCategories = ['일식', '양식', '한식', '중식', '배달'];
-  final String username = Get.arguments[0];
-  final String userdep = Get.arguments[1];
-  final String userid = Get.arguments[2];
-
   String selectedCategory = '한식';
-
   @override
   Widget build(BuildContext context) {
+    final AppUser user = ref.watch(UserProvider);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -45,41 +44,10 @@ class _HomeState extends State<Home> {
                 color: Colors.white,
               ),
               onPressed: () {
-                showDialog<void>(
-                  context: context,
-                  barrierDismissible: true,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('로그인화면'),
-                      content: SingleChildScrollView(
-                        child: ListBody(
-                          //List Body를 기준으로 Text 설정
-                          children: <Widget>[
-                            Text('처음으로 돌아가시겠습니까?'),
-                          ],
-                        ),
-                      ),
-                      actions: [
-                        TextButton(
-                          child: Text('확인'),
-                          onPressed: () {
-                            FirebaseAuth.instance.signOut();
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Login()));
-                          },
-                        ),
-                        TextButton(
-                          child: Text('취소'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
+                CustomDialog(context: context, title: '로그아웃 하시겠습니까?', buttonText: '확인', buttonCount: 2, func: (){
+                  ref.read(UserProvider.notifier).LogoutFunc();
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Login()));
+                });
               })
         ],
       ),
@@ -100,11 +68,11 @@ class _HomeState extends State<Home> {
                 backgroundImage: AssetImage('assets/meal.png'),
               ),
               accountName: Text(
-                username,
+                user.name,
                 style: TextStyle(color: Colors.black),
               ),
               accountEmail: Text(
-                userdep,
+                user.dep,
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -119,21 +87,14 @@ class _HomeState extends State<Home> {
               leading: Icon(Icons.person),
               title: Text('내 정보'),
               onTap: () async {
-                List<FFUser> users = await getFireModels();
-                FFUser? mydata;
-                for (var user in users) {
-                  if (userid == user.id) {
-                    mydata = user;
-                  }
-                }
-                Get.to(() => MyPage(), arguments: mydata);
+                Navigator.push(context, MaterialPageRoute(builder: (_) => MyPageScreen()));
               },
             ),
             ListTile(
               leading: Icon(Icons.food_bank_rounded),
               title: Text('맘마 생성'),
               onTap: () {
-                Get.to(() => Mkgroup(), arguments: userid);
+                Navigator.push(context, MaterialPageRoute(builder: (_) => MakeGroupScreen()));
               },
             ),
             ListTile(
@@ -148,7 +109,7 @@ class _HomeState extends State<Home> {
               leading: Icon(Icons.food_bank_rounded),
               title: Text('맘마 수정'),
               onTap: () {
-                Get.to(() => ReviseGroup(), arguments: userid);
+                // Get.to(() => ReviseGroup(), arguments: userid);
               },
             ),
           ],

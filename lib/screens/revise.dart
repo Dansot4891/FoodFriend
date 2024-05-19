@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food_friend/config/class.dart';
-import 'package:food_friend/config/server.dart';
+import 'package:food_friend/config/firebase_instance.dart';
 import 'package:food_friend/screens/unioninfo.dart';
 import 'package:food_friend/widget/widget.dart';
 import 'package:get/get.dart';

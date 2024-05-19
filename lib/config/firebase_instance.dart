@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food_friend/config/class.dart';
 
+FirebaseFirestore firestoreInstance = FirebaseFirestore.instance;
+
 Future<List<FFUser>> getFireModels() async {
   CollectionReference<Map<String, dynamic>> collectionReference =
       FirebaseFirestore.instance.collection("user");

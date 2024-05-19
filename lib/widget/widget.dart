@@ -36,6 +36,7 @@ class Mainscreen extends StatelessWidget {
                   text1,
                   style: TextStyle(fontSize: 20),
                 ),
+                Text('학과 : 금융수학과', style: TextStyle(fontSize: 14),),
                 Text(
                   "인원 : " + text2 + " / " + text6,
                   style: TextStyle(fontSize: 14),
