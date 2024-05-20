@@ -129,12 +129,14 @@ class MakeGroupScreenState extends ConsumerState<MakeGroupScreen> {
                 children: [
                   Spacer(),
                   CustomButton(text: '생성', func: () async {
-                    await makeGroup(user);
-                    CustomDialog(context: context, title: '생성이 완료되었습니다', buttonText: '확인', buttonCount: 1, func: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (_){
-                        return HomeScreen();
-                      }));
-                    });
+                    if (gkey.currentState!.validate()) {
+                      await makeGroup(user);
+                      CustomDialog(context: context, title: '생성이 완료되었습니다', buttonText: '확인', buttonCount: 1, func: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (_){
+                          return HomeScreen();
+                        }));
+                      });
+                    }
                   }),
                   SizedBox(
                     height: ratio.height * 40,

@@ -1,50 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:food_friend/config/class.dart';
-import 'package:food_friend/config/function.dart';
-import 'package:food_friend/config/firebase_instance.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_friend/config/custom_button.dart';
+import 'package:food_friend/config/custom_dialog.dart';
 import 'package:food_friend/config/validator.dart';
 import 'package:food_friend/main.dart';
-import 'package:food_friend/widget/widget.dart';
-import 'package:get/get.dart';
+import 'package:food_friend/model/union_model.dart';
+import 'package:food_friend/provider/union_provider.dart';
+import 'package:food_friend/widget/custom_textfield.dart';
 
-class UnionInfo extends StatefulWidget {
-  UnionInfo({super.key});
+class UnionInfoScreen extends ConsumerStatefulWidget {
+  final UnionModel data;
+  UnionInfoScreen({
+    required this.data,
+    super.key});
 
   @override
-  State<UnionInfo> createState() => _UnionInfoState();
+  UnionInfoScreenState createState() => UnionInfoScreenState();
 }
 
-class _UnionInfoState extends State<UnionInfo> {
-  final String myid = Get.arguments[0];
-
-  Mainscreen myData = Get.arguments[1];
-
-  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-
-  TextEditingController newtitle = TextEditingController();
-
-  TextEditingController max = TextEditingController();
-
-  TextEditingController place = TextEditingController();
-
-  TextEditingController time = TextEditingController();
-
-  final valueList = ['한식', '일식', '중식', '양식', '배달'];
-
-  String type = Get.arguments[2];
-
-  @override
-  void initState() {
-    super.initState();
-    newtitle = TextEditingController(text: myData.text1);
-    max = TextEditingController(text: myData.text2);
-    place = TextEditingController(text: myData.text3);
-    time = TextEditingController(text: myData.text4);
-  }
-
+class UnionInfoScreenState extends ConsumerState<UnionInfoScreen> {
+  // @override
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+    final valueList = ['한식', '일식', '중식', '양식', '배달'];
+    String type = widget.data.type;
+    TextEditingController titleController = TextEditingController(text: widget.data.title);
+    TextEditingController maxController = TextEditingController(text: widget.data.max);
+    TextEditingController numController = TextEditingController(text: widget.data.num);
+    TextEditingController placeController = TextEditingController(text: widget.data.place);
+    TextEditingController timeController = TextEditingController(text: widget.data.time);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -63,210 +49,103 @@ class _UnionInfoState extends State<UnionInfo> {
               Navigator.pop(context);
             }),
       ),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Form(
-            key: _formkey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('제목', style: TextStyle(fontSize: 20)),
-                TextFormField(
-                  validator: titleValidator,
-                  controller: newtitle,
-                  autofocus: true,
-                  keyboardType: TextInputType.text,
-                ),
-                SizedBox(
-                  height: ratio.height * 30,
-                ),
-                Text('인원', style: TextStyle(fontSize: 20)),
-                TextFormField(
-                  validator: maxValidator,
-                  controller: max,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
-                  autofocus: true,
-                  keyboardType: TextInputType.text,
-                ),
-                SizedBox(
-                  height: ratio.height * 30,
-                ),
-                Text('시간대', style: TextStyle(fontSize: 20)),
-                TextFormField(
-                  validator: timeValidator,
-                  controller: time,
-                  autofocus: true,
-                  keyboardType: TextInputType.text,
-                ),
-                SizedBox(
-                  height: ratio.height * 30,
-                ),
-                Text('장소', style: TextStyle(fontSize: 20)),
-                TextFormField(
-                  validator: placeValidator,
-                  controller: place,
-                  autofocus: true,
-                  keyboardType: TextInputType.text,
-                ),
-                SizedBox(
-                  height: ratio.height * 40,
-                ),
-                Center(
-                  child: Text(
-                    '카테고리',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-                SizedBox(
-                  height: ratio.height * 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+      body: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Form(
+                key: _formkey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          type = "한식";
-                        });
-                      },
-                      child: Container(
-                        width: ratio.width * 75,
-                        height: ratio.height * 40,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: type == "한식" ? Colors.black.withOpacity(0.3) : Colors.black),
-                        child: Center(
-                            child: Text(
-                          valueList[0],
-                          style: TextStyle(color: type == "한식" ? Colors.black : Colors.white, fontSize: 20),
-                        )),
+                    Text('제목', style: TextStyle(fontSize: 20)),
+                    SizedBox(height: ratio.height * 5,),
+                    CustomTextField(controller: titleController, hintText: '제목을 입력해주세요.', validator: titleValidator,),
+                    SizedBox(
+                      height: ratio.height * 20,
+                    ),
+                    Text('최대 인원', style: TextStyle(fontSize: 20)),
+                    SizedBox(height: ratio.height * 5,),
+                    CustomTextField(controller: maxController, hintText: '최대 인원을 입력해주세요.', validator: maxValidator, inputFormatter: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],),
+                    SizedBox(
+                      height: ratio.height * 20,
+                    ),
+                    Text('현재 인원', style: TextStyle(fontSize: 20)),
+                    SizedBox(height: ratio.height * 5,),
+                    CustomTextField(enabled: false, controller: numController, hintText: '현재 인원을 입력해주세요.', validator: maxValidator, inputFormatter: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],),
+                    SizedBox(
+                      height: ratio.height * 20,
+                    ),
+                    Text('시간대', style: TextStyle(fontSize: 20)),
+                    SizedBox(height: ratio.height * 5,),
+                    CustomTextField(controller: timeController, hintText: '시간을 입력해주세요.', validator: timeValidator,),
+                    SizedBox(
+                      height: ratio.height * 20,
+                    ),
+                    Text('장소', style: TextStyle(fontSize: 20)),
+                    SizedBox(height: ratio.height * 5,),
+                    CustomTextField(controller: placeController, hintText: '만날 장소를 입력해주세요.', validator: placeValidator,),
+                    SizedBox(
+                      height: ratio.height * 25,
+                    ),
+                    Center(
+                      child: Text(
+                        '카테고리',
+                        style: TextStyle(fontSize: 20),
                       ),
                     ),
                     SizedBox(
-                      width: ratio.width * 20,
+                      height: ratio.height * 15,
                     ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          type = "일식";
-                        });
-                      },
-                      child: Container(
-                        width: ratio.width * 75,
-                        height: ratio.height * 40,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: type == "일식" ? Colors.black.withOpacity(0.3) : Colors.black),
-                        child: Center(
-                            child: Text(
-                          valueList[1],
-                          style: TextStyle(color: type == "일식" ? Colors.black : Colors.white, fontSize: 20),
-                        )),
-                      ),
-                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                      DropdownButton(
+                          value: type,
+                          icon: Icon(Icons.keyboard_arrow_down),
+                          items: valueList.map((String val) {
+                            return DropdownMenuItem(
+                              value: val,
+                              child: Text(val),
+                            );
+                          }).toList(),
+                          onChanged: (String? val) {
+                            setState(() {
+                              type = val!;
+                            });
+                          }),
+                    ],),
                   ],
                 ),
-                SizedBox(height: ratio.height * 25,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          type = "중식";
-                        });
-                      },
-                      child: Container(
-                        width: ratio.width * 75,
-                        height: ratio.height * 40,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: type == "중식" ? Colors.black.withOpacity(0.3) : Colors.black),
-                        child: Center(
-                            child: Text(
-                          valueList[2],
-                          style: TextStyle(color: type == "중식" ? Colors.black : Colors.white, fontSize: 20),
-                        )),
-                      ),
-                    ),
-                    SizedBox(
-                      width: ratio.width * 20,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          type = "양식";
-                        });
-                      },
-                      child: Container(
-                        width: ratio.width * 75,
-                        height: ratio.height * 40,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: type == "양식" ? Colors.black.withOpacity(0.3) : Colors.black),
-                        child: Center(
-                            child: Text(
-                          valueList[3],
-                          style: TextStyle(color: type == "양식" ? Colors.black : Colors.white, fontSize: 20),
-                        )),
-                      ),
-                    ),
-                    SizedBox(
-                      width: ratio.width * 20,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          type = "배달";
-                        });
-                      },
-                      child: Container(
-                        width: ratio.width * 75,
-                        height: ratio.height * 40,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: type == "배달" ? Colors.black.withOpacity(0.3) : Colors.black),
-                        child: Center(
-                            child: Text(
-                          valueList[4],
-                          style: TextStyle(color: type == "배달" ? Colors.black : Colors.white, fontSize: 20),
-                        )),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: ratio.height * 50,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                        onPressed: () {
-                          if (_formkey.currentState!.validate()) {
-                            updateUnionByName(myid, myData.text1, newtitle.text,
-                              max.text, place.text, time.text, type);
-                              Navigator.pop(context);
-                          }else{}
-                        },
-                        child: Text(
-                          '수정하기',
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        )),
-                  ],
-                )
-              ],
+              ),
             ),
           ),
-        ),
-      ),
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Column(
+              children: [
+                CustomButton(text: '수정하기', func: () async {
+                  final newData = UnionModel(max: maxController.text, num: numController.text, place: placeController.text, time: timeController.text, title: titleController.text, type: type, userid: widget.data.userid, dep: widget.data.userid);
+                  if (_formkey.currentState!.validate()) {
+                    if(int.parse(widget.data.num) > int.parse(maxController.text)){
+                      CustomDialog(context: context, title: '최대 인원과 현재 인원을 확인해주세요.', buttonText: '확인', buttonCount: 1, func: (){
+                        Navigator.pop(context);
+                      });
+                      return;
+                    }
+                    ref.read(unionProvider.notifier).changeUnion(union : newData, context: context, title: widget.data.title);
+                  }
+                }, horizonMargin: 20,),
+              ],
+            ),
+          )
+        ],
+      )
     );
   }
 }

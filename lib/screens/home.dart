@@ -31,6 +31,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     final AppUser user = ref.watch(UserProvider);
     final unionData = ref.watch(unionSelectedProvider(selectedCategory));
     return Scaffold(
+      backgroundColor: Color(0xFFFDFDFD),
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
@@ -101,7 +102,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                     time: unionData[index].time,
                     place: unionData[index].place,
                     func: () async {
-                      ref.read(unionProvider.notifier).enterUnion(unionData[index], context);
+                      ref.read(unionProvider.notifier).changeUnion(union : unionData[index], context: context);
                     });
               },
               separatorBuilder: (BuildContext context, int index) =>
@@ -192,7 +193,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
             title: Text('맘마 수정'),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ReviseGroup()));
+                  MaterialPageRoute(builder: (context) => ReviseScreen()));
             },
           ),
         ],

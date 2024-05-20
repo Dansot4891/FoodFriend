@@ -8,18 +8,21 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final bool obscure;
   final List<TextInputFormatter>? inputFormatter;
+  final bool enabled;
   
   const CustomTextField({
     required this.controller,
     required this.hintText,
     this.validator,
     this.obscure = false,
+    this.enabled = true,
     this.inputFormatter,
     super.key});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: enabled,
       obscureText: obscure,
       controller: controller,
       inputFormatters: inputFormatter,

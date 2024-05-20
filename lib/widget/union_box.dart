@@ -42,18 +42,42 @@ class UnionBox extends StatelessWidget {
                   title,
                   style: TextStyle(fontSize: 20),
                 ),
-                Text('학과 : ${dep}', style: TextStyle(fontSize: 14),),
-                Text(
-                  "인원 : " + max + " / " + num,
-                  style: TextStyle(fontSize: 14),
+                Row(
+                  children: [
+                    Icon(Icons.badge_outlined),
+                    SizedBox(width: ratio.width * 5,),
+                    Text('학과 : ${dep}', style: TextStyle(fontSize: 14),),
+                  ],
                 ),
-                Text(
-                  "시간 : " + time,
-                  style: TextStyle(fontSize: 14),
+                Row(
+                  children: [
+                    Icon(Icons.groups_outlined),
+                    SizedBox(width: ratio.width * 5,),
+                    Text(
+                      "인원 : " + max + " / " + num,
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ],
                 ),
-                Text(
-                  "장소 : " + place,
-                  style: TextStyle(fontSize: 14),
+                Row(
+                  children: [
+                    Icon(Icons.schedule_outlined),
+                    SizedBox(width: ratio.width * 5,),
+                    Text(
+                      "시간 : " + time,
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.pin_drop_outlined),
+                    SizedBox(width: ratio.width * 5,),
+                    Text(
+                      "장소 : " + place,
+                      style: TextStyle(fontSize: 14),
+                    )
+                  ],
                 ),
               ],
             ),
