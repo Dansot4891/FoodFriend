@@ -4,7 +4,9 @@ import 'package:food_friend/config/custom_dialog.dart';
 import 'package:food_friend/config/validator.dart';
 import 'package:food_friend/main.dart';
 import 'package:food_friend/model/user_model.dart';
+import 'package:food_friend/provider/gender_provider.dart';
 import 'package:food_friend/provider/user_provider.dart';
+import 'package:food_friend/widget/custom_radio.dart';
 import 'package:food_friend/widget/custom_textfield.dart';
 
 class SignupScreen extends ConsumerStatefulWidget {
@@ -131,26 +133,10 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
                           fontSize: 16,
                         ),
                       ),
-                      RadioListTile(
-                        title: Text('남자'),
-                        value: Sex.male,
-                        groupValue: _sex,
-                        onChanged: (value) {
-                          setState(() {
-                            _sex = value;
-                          });
-                        },
+                      SizedBox(
+                        height: ratio.height * 30,
                       ),
-                      RadioListTile(
-                        title: Text('여자'),
-                        value: Sex.femail,
-                        groupValue: _sex,
-                        onChanged: (value) {
-                          setState(() {
-                            _sex = value;
-                          });
-                        },
-                      ),
+                      CustomRadio(),
                     ],
                   ),
                 ),
@@ -160,6 +146,7 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
               hasScrollBody: false,
               child: Column(
                 children: [
+                  Spacer(),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 20),
@@ -170,7 +157,7 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
                             password: _pwController.text,
                             id: _idController.text,
                             name: _nameController.text,
-                            sex: _sex == Sex.male ? '남자' : '여자');
+                            sex: ref.watch(genderProvider));
                         if (_formkey.currentState!.validate()) {
                           if (_pwController.text != _pwCheckController.text) {
                             CustomDialog(
@@ -199,6 +186,9 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
                           )),
                     ),
                   ),
+                  SizedBox(
+                        height: ratio.height * 30,
+                      ),
                 ],
               ),
             )

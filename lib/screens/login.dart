@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_friend/config/validator.dart';
 import 'package:food_friend/main.dart';
+import 'package:food_friend/provider/gender_provider.dart';
 import 'package:food_friend/provider/user_provider.dart';
 import 'package:food_friend/screens/signup.dart';
 import 'dart:io';
@@ -72,7 +73,8 @@ class Login extends ConsumerWidget {
                                 ),
                                 ElevatedButton(
                                   onPressed: () async {
-                                    ref.read(UserProvider.notifier).LoginFunc(id: _idController.text, pw: _pwController.text, context: context);
+                                    await ref.read(UserProvider.notifier).LoginFunc(id: _idController.text, pw: _pwController.text, context: context);
+                                    ref.read(genderProvider.notifier).setGender(ref.watch(UserProvider).sex);
                                   },
                                   child: Text('  로그인  ',
                                       style: TextStyle(color: Colors.white)),
