@@ -30,6 +30,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final AppUser user = ref.watch(UserProvider);
     final unionData = ref.watch(unionSelectedProvider(selectedCategory));
+    print(unionData);
     return Scaffold(
       backgroundColor: Color(0xFFFDFDFD),
       appBar: AppBar(
@@ -89,6 +90,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                 hint: Text('음식 카테고리 선택'),
               ),
             ),
+            Divider(thickness: 1, color: Colors.black,),
             SizedBox(height: ratio.height * 20),
             Expanded(
                 child: ListView.separated(

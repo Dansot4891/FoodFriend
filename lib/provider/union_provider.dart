@@ -6,9 +6,12 @@ import 'package:food_friend/config/firebase_instance.dart';
 import 'package:food_friend/model/union_model.dart';
 import 'package:food_friend/screens/home.dart';
 
-final myUnionProvider = Provider.family<List<UnionModel>, String>((ref, userid){
+//final myUnionProvider = Provider.family<List
+
+final myUnionsProvider = Provider.family<List<UnionModel>, String>((ref, userid){
   List<UnionModel> data = ref.watch(unionProvider);
 
+  print(data);
   List<UnionModel> selectedData = [];
   for(var dt in data){
     if(dt.userid == userid){
@@ -126,9 +129,9 @@ class UnionNotifier extends StateNotifier<List<UnionModel>>{
           }));
         });
       }
-      print('Documents deleted successfully');
+      print('삭제 완료');
     } catch (e) {
-      print('Error deleting documents: $e');
+      print(e);
     }
   }
 }

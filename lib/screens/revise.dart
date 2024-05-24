@@ -10,7 +10,7 @@ class ReviseScreen extends ConsumerWidget {
   // List<Mainscreen> myData = [];
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final data = ref.watch(myUnionProvider(ref.watch(UserProvider).id));
+    final data = ref.watch(myUnionsProvider(ref.watch(UserProvider).id));
     return Scaffold(
       appBar: AppBar(
         title: Text(
