@@ -9,6 +9,7 @@ import 'package:food_friend/screens/login.dart';
 import 'package:food_friend/screens/mkgroup.dart';
 import 'package:food_friend/screens/mypage.dart';
 import 'package:food_friend/screens/recommendation.dart';
+import 'package:food_friend/screens/report.dart';
 import 'package:food_friend/screens/revise.dart';
 import 'package:food_friend/widget/union_box.dart';
 
@@ -30,7 +31,6 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final AppUser user = ref.watch(UserProvider);
     final unionData = ref.watch(unionSelectedProvider(selectedCategory));
-    print(unionData);
     return Scaffold(
       backgroundColor: Color(0xFFFDFDFD),
       appBar: AppBar(
@@ -97,14 +97,16 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
               itemCount: unionData.length,
               itemBuilder: (context, index) {
                 return UnionBox(
-                    title: unionData[index].title,
-                    dep: unionData[index].dep,
-                    max: unionData[index].max,
-                    num: unionData[index].num,
-                    time: unionData[index].time,
-                    place: unionData[index].place,
+                    union: unionData[index],
                     func: () async {
-                      ref.read(unionProvider.notifier).changeUnion(union : unionData[index], context: context);
+                      if(unionData[index].userid == user.id){
+                        CustomDialog(barrierDismissible: false, context: context, title: '직접 생성하신 팀에는 참가하실 수 없습니다.', buttonText: '확인', buttonCount: 1, func: (){
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        });
+                        return;
+                      }
+                      ref.read(unionProvider.notifier).EnterUnion(union : unionData[index], context: context, userid : user.id);
                     });
               },
               separatorBuilder: (BuildContext context, int index) =>
@@ -196,6 +198,14 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => ReviseScreen()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.report),
+            title: Text('신고하기'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ReportScreen()));
             },
           ),
         ],

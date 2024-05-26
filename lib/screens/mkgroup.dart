@@ -169,7 +169,8 @@ class MakeGroupScreenState extends ConsumerState<MakeGroupScreen> {
             time: time,
             place: place,
             dep: user.dep,
-            userid: user.id)
+            userid: user.id,
+            )
         .toJson());
   }
 }

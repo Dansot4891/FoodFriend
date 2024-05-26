@@ -15,6 +15,7 @@ class UnionModel with _$UnionModel {
     required String type,
     required String userid,
     required String dep,
+    @Default([]) List<String> users,
   }) = _UnionModel;
 
   factory UnionModel.fromJson(Map<String, dynamic> json) => _$UnionModelFromJson(json);

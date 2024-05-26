@@ -7,7 +7,7 @@ import 'package:food_friend/widget/union_box.dart';
 
 // 함수 호출 시 상태 변경을 알리기 위한 StatefulWidget 클래스
 class ReviseScreen extends ConsumerWidget {
-  // List<Mainscreen> myData = [];
+  
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(myUnionsProvider(ref.watch(UserProvider).id));
@@ -37,7 +37,7 @@ class ReviseScreen extends ConsumerWidget {
                 return UnionInfoScreen(data: data[index],);
               }));
             },
-            child: UnionBox(buttonText: '삭제', title: data[index].title, dep: data[index].dep, max: data[index].max, num: data[index].num, time: data[index].time, place: data[index].place, func: () async {
+            child: UnionBox(buttonText: '삭제', union: data[index], func: () async {
               ref.read(unionProvider.notifier).deleteData(data[index], context);
             })
             );

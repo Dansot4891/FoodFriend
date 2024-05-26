@@ -16,6 +16,9 @@ _$UnionModelImpl _$$UnionModelImplFromJson(Map<String, dynamic> json) =>
       type: json['type'] as String,
       userid: json['userid'] as String,
       dep: json['dep'] as String,
+      users:
+          (json['users'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+              const [],
     );
 
 Map<String, dynamic> _$$UnionModelImplToJson(_$UnionModelImpl instance) =>
@@ -28,4 +31,5 @@ Map<String, dynamic> _$$UnionModelImplToJson(_$UnionModelImpl instance) =>
       'type': instance.type,
       'userid': instance.userid,
       'dep': instance.dep,
+      'users': instance.users,
     };

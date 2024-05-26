@@ -18,8 +18,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    ratio = Size(MediaQuery.sizeOf(context).width / 400,
-                 MediaQuery.sizeOf(context).height / 900); 
+    ratio = Size(MediaQuery.sizeOf(context).width / 412,
+                 MediaQuery.sizeOf(context).height / 892); 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Myapp',

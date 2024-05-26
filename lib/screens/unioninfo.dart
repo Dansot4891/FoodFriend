@@ -10,7 +10,7 @@ import 'package:food_friend/provider/union_provider.dart';
 import 'package:food_friend/widget/custom_textfield.dart';
 
 class UnionInfoScreen extends ConsumerStatefulWidget {
-  final UnionModel data;
+  UnionModel data;
   UnionInfoScreen({
     required this.data,
     super.key});
@@ -29,10 +29,11 @@ class UnionInfoScreenState extends ConsumerState<UnionInfoScreen> {
     TextEditingController titleController = TextEditingController(text: widget.data.title);
     TextEditingController maxController = TextEditingController(text: widget.data.max);
     TextEditingController numController = TextEditingController(text: widget.data.num);
+    TextEditingController peopleController = TextEditingController(text: widget.data.users.join(', '));
     TextEditingController placeController = TextEditingController(text: widget.data.place);
     TextEditingController timeController = TextEditingController(text: widget.data.time);
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(
           '맘마 수정',
@@ -75,9 +76,13 @@ class UnionInfoScreenState extends ConsumerState<UnionInfoScreen> {
                     ),
                     Text('현재 인원', style: TextStyle(fontSize: 20)),
                     SizedBox(height: ratio.height * 5,),
-                    CustomTextField(enabled: false, controller: numController, hintText: '현재 인원을 입력해주세요.', validator: maxValidator, inputFormatter: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly
-                      ],),
+                    CustomTextField(enabled: false, controller: numController, hintText: '현재 인원을 입력해주세요.', ),
+                    SizedBox(
+                      height: ratio.height * 20,
+                    ),
+                    Text('현재 참가 인원', style: TextStyle(fontSize: 20)),
+                    SizedBox(height: ratio.height * 5,),
+                    CustomTextField(enabled: false, controller: peopleController, hintText: '현재 참가 인원이 없습니다.',),
                     SizedBox(
                       height: ratio.height * 20,
                     ),
@@ -106,19 +111,23 @@ class UnionInfoScreenState extends ConsumerState<UnionInfoScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                       DropdownButton(
-                          value: type,
-                          icon: Icon(Icons.keyboard_arrow_down),
-                          items: valueList.map((String val) {
-                            return DropdownMenuItem(
-                              value: val,
-                              child: Text(val),
-                            );
-                          }).toList(),
-                          onChanged: (String? val) {
-                            setState(() {
-                              type = val!;
-                            });
-                          }),
+                        value: type,
+                        icon: Icon(Icons.keyboard_arrow_down),
+                        items: valueList.map((String val) {
+                          return DropdownMenuItem(
+                            value: val,
+                            child: Text(val),
+                          );
+                        }).toList(),
+                        onChanged: (String? val) {
+                          setState(() { 
+                            type = val!;
+                            widget.data = widget.data.copyWith(max: maxController.text, num: numController.text, place: placeController.text, time: timeController.text, title: titleController.text, type: val, userid: widget.data.userid, dep: widget.data.dep);
+                          });
+                          print(widget.data);
+                        },
+                      ),
+
                     ],),
                   ],
                 ),
@@ -130,7 +139,7 @@ class UnionInfoScreenState extends ConsumerState<UnionInfoScreen> {
             child: Column(
               children: [
                 CustomButton(text: '수정하기', func: () async {
-                  final newData = UnionModel(max: maxController.text, num: numController.text, place: placeController.text, time: timeController.text, title: titleController.text, type: type, userid: widget.data.userid, dep: widget.data.userid);
+                  final newData = UnionModel(max: maxController.text, num: numController.text, place: placeController.text, time: timeController.text, title: titleController.text, type: type, userid: widget.data.userid, dep: widget.data.dep);
                   if (_formkey.currentState!.validate()) {
                     if(int.parse(widget.data.num) > int.parse(maxController.text)){
                       CustomDialog(context: context, title: '최대 인원과 현재 인원을 확인해주세요.', buttonText: '확인', buttonCount: 1, func: (){
@@ -141,6 +150,7 @@ class UnionInfoScreenState extends ConsumerState<UnionInfoScreen> {
                     ref.read(unionProvider.notifier).changeUnion(union : newData, context: context, title: widget.data.title);
                   }
                 }, horizonMargin: 20,),
+                SizedBox(height: ratio.height * 20,),
               ],
             ),
           )

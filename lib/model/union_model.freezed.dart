@@ -28,6 +28,7 @@ mixin _$UnionModel {
   String get type => throw _privateConstructorUsedError;
   String get userid => throw _privateConstructorUsedError;
   String get dep => throw _privateConstructorUsedError;
+  List<String> get users => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -49,7 +50,8 @@ abstract class $UnionModelCopyWith<$Res> {
       String title,
       String type,
       String userid,
-      String dep});
+      String dep,
+      List<String> users});
 }
 
 /// @nodoc
@@ -73,6 +75,7 @@ class _$UnionModelCopyWithImpl<$Res, $Val extends UnionModel>
     Object? type = null,
     Object? userid = null,
     Object? dep = null,
+    Object? users = null,
   }) {
     return _then(_value.copyWith(
       max: null == max
@@ -107,6 +110,10 @@ class _$UnionModelCopyWithImpl<$Res, $Val extends UnionModel>
           ? _value.dep
           : dep // ignore: cast_nullable_to_non_nullable
               as String,
+      users: null == users
+          ? _value.users
+          : users // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -127,7 +134,8 @@ abstract class _$$UnionModelImplCopyWith<$Res>
       String title,
       String type,
       String userid,
-      String dep});
+      String dep,
+      List<String> users});
 }
 
 /// @nodoc
@@ -149,6 +157,7 @@ class __$$UnionModelImplCopyWithImpl<$Res>
     Object? type = null,
     Object? userid = null,
     Object? dep = null,
+    Object? users = null,
   }) {
     return _then(_$UnionModelImpl(
       max: null == max
@@ -183,6 +192,10 @@ class __$$UnionModelImplCopyWithImpl<$Res>
           ? _value.dep
           : dep // ignore: cast_nullable_to_non_nullable
               as String,
+      users: null == users
+          ? _value._users
+          : users // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -198,7 +211,9 @@ class _$UnionModelImpl implements _UnionModel {
       required this.title,
       required this.type,
       required this.userid,
-      required this.dep});
+      required this.dep,
+      final List<String> users = const []})
+      : _users = users;
 
   factory _$UnionModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UnionModelImplFromJson(json);
@@ -219,10 +234,18 @@ class _$UnionModelImpl implements _UnionModel {
   final String userid;
   @override
   final String dep;
+  final List<String> _users;
+  @override
+  @JsonKey()
+  List<String> get users {
+    if (_users is EqualUnmodifiableListView) return _users;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_users);
+  }
 
   @override
   String toString() {
-    return 'UnionModel(max: $max, num: $num, place: $place, time: $time, title: $title, type: $type, userid: $userid, dep: $dep)';
+    return 'UnionModel(max: $max, num: $num, place: $place, time: $time, title: $title, type: $type, userid: $userid, dep: $dep, users: $users)';
   }
 
   @override
@@ -237,13 +260,14 @@ class _$UnionModelImpl implements _UnionModel {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.userid, userid) || other.userid == userid) &&
-            (identical(other.dep, dep) || other.dep == dep));
+            (identical(other.dep, dep) || other.dep == dep) &&
+            const DeepCollectionEquality().equals(other._users, _users));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, max, num, place, time, title, type, userid, dep);
+  int get hashCode => Object.hash(runtimeType, max, num, place, time, title,
+      type, userid, dep, const DeepCollectionEquality().hash(_users));
 
   @JsonKey(ignore: true)
   @override
@@ -268,7 +292,8 @@ abstract class _UnionModel implements UnionModel {
       required final String title,
       required final String type,
       required final String userid,
-      required final String dep}) = _$UnionModelImpl;
+      required final String dep,
+      final List<String> users}) = _$UnionModelImpl;
 
   factory _UnionModel.fromJson(Map<String, dynamic> json) =
       _$UnionModelImpl.fromJson;
@@ -289,6 +314,8 @@ abstract class _UnionModel implements UnionModel {
   String get userid;
   @override
   String get dep;
+  @override
+  List<String> get users;
   @override
   @JsonKey(ignore: true)
   _$$UnionModelImplCopyWith<_$UnionModelImpl> get copyWith =>
