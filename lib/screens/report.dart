@@ -1,17 +1,18 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_friend/config/custom_button.dart';
 import 'package:food_friend/config/custom_dialog.dart';
 import 'package:food_friend/config/firebase_instance.dart';
 import 'package:food_friend/main.dart';
+import 'package:food_friend/provider/user_provider.dart';
 import 'package:food_friend/widget/custom_textfield.dart';
 
-class ReportScreen extends StatelessWidget {
+class ReportScreen extends ConsumerWidget {
   const ReportScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+
     TextEditingController userIdController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
@@ -34,7 +35,7 @@ class ReportScreen extends StatelessWidget {
             SizedBox(height: ratio.height * 30,),
             CustomButton(text: '신고하기', func: () async {
               try{
-                final data = {'userId' : userIdController.text};
+                final data = {'userId' : userIdController.text, 'reporter' : ref.watch(UserProvider).id};
                 await firestoreInstance.collection('report').doc().set(data);
                 CustomDialog(context: context, title: '신고가 완료되었습니다!', buttonText: '확인', buttonCount: 1, func: (){Navigator.pop(context);});
               }catch(e){
