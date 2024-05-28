@@ -17,6 +17,9 @@ mixin FireBaseMixin{
   }
 
   Future<void> updateDoc(String collectionName, {required String documentId, required Map<String, dynamic> data} ) async {
+    print(collectionName);
+    print(documentId);
+    print(data);
     db.collection(collectionName).doc(documentId).update(data);
   }
 }

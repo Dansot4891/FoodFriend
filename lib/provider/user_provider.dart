@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_friend/config/custom_dialog.dart';
-import 'package:food_friend/config/firebase_instance.dart';
 import 'package:food_friend/model/firebase_model.dart';
 import 'package:food_friend/model/user_model.dart';
 import 'package:food_friend/screens/home.dart';
 import 'package:food_friend/screens/login.dart';
 
-final UserProvider =
-    StateNotifierProvider<UserNotifier, AppUser>((ref) => UserNotifier());
+final UserProvider = StateNotifierProvider<UserNotifier, AppUser>((ref) => UserNotifier());
 
 class UserNotifier extends StateNotifier<AppUser> with FireBaseMixin {
   UserNotifier()
@@ -21,20 +19,17 @@ class UserNotifier extends StateNotifier<AppUser> with FireBaseMixin {
             password: 'password',
             sex: 'sex'));
 
-  Future<List<AppUser>> testFunc() async {
-    final snapshot = await getDocs('user');
-
-    // 비밀번호 Null 처리
-    List<AppUser> users = snapshot.map((e) {
-      Map<String, dynamic> data = e.data() as Map<String, dynamic>;
-      
-      data.remove('password');
-
-      return AppUser.fromJson(data);
-    }).toList();
-    
-    print(users);
-    return users;
+  // 아이디 중복 검사
+  Future<bool> checkId(String userId) async {
+    bool checked = false;
+    final data = await getDocs('user');
+      for(dynamic doc in data){
+        final userData = AppUser.fromJson(doc.data());
+        if(userData.id == userId){
+          checked = true;
+        }
+      }
+    return checked;
   }
 
   // 회원가입(아이디 중복 검사 포함)
@@ -43,14 +38,7 @@ class UserNotifier extends StateNotifier<AppUser> with FireBaseMixin {
     required BuildContext context,
   }) async {
     try {
-      CollectionReference<Map<String, dynamic>> collectionReference = FirebaseFirestore.instance.collection("user");
-      QuerySnapshot<Map<String, dynamic>> querySnapshot = await collectionReference.orderBy("id").get();
-      bool overlap = false;
-      for (var doc in querySnapshot.docs) {
-        if (doc.data()['id'] == user.id) {
-          overlap = true;
-        }
-      }
+      bool overlap = await checkId(user.id);
       if (overlap) {
         CustomDialog(
             context: context,
@@ -61,11 +49,11 @@ class UserNotifier extends StateNotifier<AppUser> with FireBaseMixin {
               Navigator.pop(context);
             });
       } else {
-        await firestoreInstance.collection('user').doc().set(user.toJson());
-        Navigator.push(context, MaterialPageRoute(builder: (_){
-          return Login();
-        }));
-        print('회원가입 성공');
+        await db.collection("user").doc().set(user.toJson()).then((_) {
+          Navigator.push(context, MaterialPageRoute(builder: (_){
+            return Login();
+          }));
+        });
       }
     } catch (e) {
       print(e);
@@ -79,14 +67,13 @@ class UserNotifier extends StateNotifier<AppUser> with FireBaseMixin {
     required BuildContext context,
   }) async {
     try {
-      CollectionReference<Map<String, dynamic>> collectionReference =
-          FirebaseFirestore.instance.collection("user");
-      QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          await collectionReference.orderBy("id").get();
+      final snapshot = await getDocs('user');
+      List<AppUser> users = snapshot.map((e) => AppUser.fromJson(e.data() as Map<String, dynamic>)).toList();
       bool loginState = false;
-      for (var doc in querySnapshot.docs) {
-        if (doc.data()['id'] == id && doc.data()['password'] == pw) {
-          AppUser user = AppUser.fromJson(doc.data());
+      // 아이디, 비밀번호 확인
+      for (var userData in users) {
+        if (userData.id == id && userData.password  == pw) {
+          AppUser user = userData;
           user = user.copyWith(password: null);
           state = user;
           loginState = true;
@@ -124,7 +111,6 @@ class UserNotifier extends StateNotifier<AppUser> with FireBaseMixin {
     } else {
       state = state.copyWith(sex: '남자');
     }
-    print(state);
   }
 
   // 내 정보 변경(아이디 중보 검사, 비밀번호 확인 포함)
@@ -134,12 +120,10 @@ class UserNotifier extends StateNotifier<AppUser> with FireBaseMixin {
     required WidgetRef ref,
     required String nowPw,
   }) async {
-    CollectionReference<Map<String, dynamic>> collectionReference = FirebaseFirestore.instance.collection("user");
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await collectionReference.orderBy("id").get();
-    
-    for (var doc in querySnapshot.docs) {
-      if (doc.data()['id'] == state.id) {
-        if(nowPw != doc.data()['password']){
+    final snapshot = await getDocs('user');
+    List<AppUser> userData = snapshot.map((e) => AppUser.fromJson(e.data() as Map<String, dynamic>)).toList();
+    for (var data in userData) {
+      if (data.id == state.id && nowPw != data.password) {
           CustomDialog(
             context: context,
             title: '비밀번호를 확인해주세요.',
@@ -147,12 +131,10 @@ class UserNotifier extends StateNotifier<AppUser> with FireBaseMixin {
             buttonCount: 1,
             func: () {
               Navigator.pop(context);
-          });  
+          });
           return;
-        }
       }
-
-      if (doc.data()['id'] == user.id && doc.data()['id'] != state.id) {
+      if (data.id == user.id && data.id != state.id) {
         CustomDialog(
           context: context,
           title: '중복된 아이디가 존재합니다.\n다른 아이디를 사용해주세요.',
@@ -164,20 +146,9 @@ class UserNotifier extends StateNotifier<AppUser> with FireBaseMixin {
           return;
       }
     }
-
-      firestoreInstance
-          .collection('user')
-          .where('id', isEqualTo: state.id)
-          .get()
-          .then((QuerySnapshot querySnapshot) {
+      db.collection('user').where('id', isEqualTo: state.id).get().then((QuerySnapshot querySnapshot) {
         querySnapshot.docs.forEach((doc) {
-          firestoreInstance.collection('user').doc(doc.id).update({
-            'id': user.id,
-            'password': user.password,
-            'name': user.name,
-            'dep': user.dep,
-            'sex': user.sex,
-          }).then((_) {
+          db.collection('user').doc(doc.id).update(user.toJson()).then((_) {
             CustomDialog(
                 context: context,
                 title: '변경이 완료되었습니다.\n재로그인 해주세요.',

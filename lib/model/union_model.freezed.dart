@@ -20,7 +20,7 @@ UnionModel _$UnionModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UnionModel {
-  String get id => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
   String get max => throw _privateConstructorUsedError;
   String get num => throw _privateConstructorUsedError;
   String get place => throw _privateConstructorUsedError;
@@ -44,7 +44,7 @@ abstract class $UnionModelCopyWith<$Res> {
       _$UnionModelCopyWithImpl<$Res, UnionModel>;
   @useResult
   $Res call(
-      {String id,
+      {String? id,
       String max,
       String num,
       String place,
@@ -69,7 +69,7 @@ class _$UnionModelCopyWithImpl<$Res, $Val extends UnionModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? max = null,
     Object? num = null,
     Object? place = null,
@@ -81,10 +81,10 @@ class _$UnionModelCopyWithImpl<$Res, $Val extends UnionModel>
     Object? users = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       max: null == max
           ? _value.max
           : max // ignore: cast_nullable_to_non_nullable
@@ -134,7 +134,7 @@ abstract class _$$UnionModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String id,
+      {String? id,
       String max,
       String num,
       String place,
@@ -157,7 +157,7 @@ class __$$UnionModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? max = null,
     Object? num = null,
     Object? place = null,
@@ -169,10 +169,10 @@ class __$$UnionModelImplCopyWithImpl<$Res>
     Object? users = null,
   }) {
     return _then(_$UnionModelImpl(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       max: null == max
           ? _value.max
           : max // ignore: cast_nullable_to_non_nullable
@@ -217,7 +217,7 @@ class __$$UnionModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UnionModelImpl implements _UnionModel {
   _$UnionModelImpl(
-      {required this.id,
+      {this.id,
       required this.max,
       required this.num,
       required this.place,
@@ -233,7 +233,7 @@ class _$UnionModelImpl implements _UnionModel {
       _$$UnionModelImplFromJson(json);
 
   @override
-  final String id;
+  final String? id;
   @override
   final String max;
   @override
@@ -302,7 +302,7 @@ class _$UnionModelImpl implements _UnionModel {
 
 abstract class _UnionModel implements UnionModel {
   factory _UnionModel(
-      {required final String id,
+      {final String? id,
       required final String max,
       required final String num,
       required final String place,
@@ -317,7 +317,7 @@ abstract class _UnionModel implements UnionModel {
       _$UnionModelImpl.fromJson;
 
   @override
-  String get id;
+  String? get id;
   @override
   String get max;
   @override

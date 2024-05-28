@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_friend/config/class.dart';
 import 'package:food_friend/config/custom_button.dart';
 import 'package:food_friend/config/custom_dialog.dart';
-import 'package:food_friend/config/firebase_instance.dart';
 import 'package:food_friend/config/validator.dart';
 import 'package:food_friend/main.dart';
 import 'package:food_friend/model/union_model.dart';
-import 'package:food_friend/model/user_model.dart';
+import 'package:food_friend/provider/union_provider.dart';
 import 'package:food_friend/provider/user_provider.dart';
 import 'package:food_friend/screens/home.dart';
 import 'package:food_friend/widget/custom_textfield.dart';
 
 class MakeGroupScreen extends ConsumerStatefulWidget {
+  final String? title;
+  final String? type;
+  MakeGroupScreen({
+    Key? key,
+    this.title,
+    this.type,
+  }) : super(key: key);
   @override
   MakeGroupScreenState createState() => MakeGroupScreenState();
 }
 
 class MakeGroupScreenState extends ConsumerState<MakeGroupScreen> {
+
   GlobalKey<FormState> gkey = GlobalKey<FormState>();
   TextEditingController _titleController = TextEditingController();
   TextEditingController _maxController = TextEditingController();
@@ -31,6 +37,17 @@ class MakeGroupScreenState extends ConsumerState<MakeGroupScreen> {
   final inputFormatter = <TextInputFormatter>[
     FilteringTextInputFormatter.digitsOnly
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    if(widget.title != null){
+      _titleController = TextEditingController(text: widget.title);
+    }
+    if(widget.type != null){
+      food = widget.type!;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +147,9 @@ class MakeGroupScreenState extends ConsumerState<MakeGroupScreen> {
                     Spacer(),
                     CustomButton(text: '생성', func: () async {
                       if (gkey.currentState!.validate()) {
-                        await makeGroup(user);
+                        final union = UnionModel(type: food,title: _titleController.text,max: _maxController.text,num: '1', time: _timeController.text, place: _placeController.text,dep: user.dep, userid: user.id, users: [user.id]);
+                        await ref.read(unionProvider.notifier).makeGroup(union : union);
+                        //await makeGroup(user);
                         CustomDialog(context: context, title: '생성이 완료되었습니다', buttonText: '확인', buttonCount: 1, func: (){
                           Navigator.push(context, MaterialPageRoute(builder: (_){
                             return HomeScreen();
@@ -149,20 +168,5 @@ class MakeGroupScreenState extends ConsumerState<MakeGroupScreen> {
         ),
       )
     );
-  }
-
-  Future makeGroup(AppUser user) async {
-    String title = _titleController.text;
-    String max = _maxController.text;
-    String time = _timeController.text;
-    String place = _placeController.text;
-    String type = food;
-
-    final docUnion = firestoreInstance.collection('union').doc();
-
-    final union = UnionModel(id: docUnion.id, type: type,title: title,max: max,num: '1',time: time,place: place,dep: user.dep,userid: user.id);
-    print(union);
-
-    await docUnion.set(union.toJson());
   }
 }

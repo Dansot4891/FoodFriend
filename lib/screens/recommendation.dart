@@ -1,28 +1,36 @@
 import 'dart:math';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_friend/config/custom_button.dart';
+import 'package:food_friend/config/custom_dialog.dart';
 import 'package:food_friend/main.dart';
+import 'package:food_friend/model/recommend_model.dart';
+import 'package:food_friend/provider/recommend_provider.dart';
+import 'package:food_friend/screens/home.dart';
+import 'package:food_friend/screens/mkgroup.dart';
 
-class recommendation extends StatefulWidget {
+class RecommendationScreen extends ConsumerStatefulWidget {
   @override
-  State<recommendation> createState() => _recommendationState();
+  ConsumerState<RecommendationScreen> createState() => _RecommendationScreenState();
 }
 
-class _recommendationState extends State<recommendation> {
+class _RecommendationScreenState extends ConsumerState<RecommendationScreen> {
   final valueList = ['한식', '일식', '중식', '양식'];
 
-  Map<String, List<String>> categoryToFoodMap = {
-    '한식': ['비빔밥', '불고기', '김치찌개', '떡볶이', '고등어구이'],
-    '일식': ['초밥', '라멘', '돈까스', '회', '덮밥'],
-    '중식': ['짜장면', '짬뽕', '탕수육', '양장피', '잡채밥'],
-    '양식': ['피자', '스테이크', '샐러드', '햄버거', '파스타'],
-  };
+  @override
+  void initState() {
+    super.initState();
+    ref.read(recommendProvider.notifier).fetchData();
+  }
 
   String selectedCategory = '한식';
   String recommendedFood = '';
+  String recommendedFoodImgPath = '';
 
   @override
   Widget build(BuildContext context) {
+    final selectedData = ref.watch(selectedRecommendProvider(selectedCategory));
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -38,7 +46,7 @@ class _recommendationState extends State<recommendation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: ratio.height * 180,
+              height: ratio.height * 20,
             ),
             DropdownButton<String>(
               value: selectedCategory,
@@ -46,6 +54,7 @@ class _recommendationState extends State<recommendation> {
                 setState(() {
                   selectedCategory = newValue!;
                   recommendedFood = '';
+                  recommendedFoodImgPath = '';
                 });
               },
               items: valueList.map((String value) {
@@ -62,24 +71,57 @@ class _recommendationState extends State<recommendation> {
                 '추천 음식: $recommendedFood',
                 style: TextStyle(fontSize: 28),
               ),
+            if(recommendedFoodImgPath.isNotEmpty)
+              CachedNetworkImage(
+                //width: ratio.width * 200,
+                //height: ratio.height * 200,
+                memCacheHeight: (ratio.height * 200).round(),
+                memCacheWidth: (ratio.width * 200).round(),
+                imageUrl : recommendedFoodImgPath,
+                placeholder : (context, url) => CircularProgressIndicator(),
+                errorWidget : (context, url, error) => Icon(Icons.error)
+                //Image.network(recommendedFoodImgPath, width: ratio.width * 150,)
+              ),
             SizedBox(height: ratio.height * 20),
             CustomButton(
                 horizonMargin: 20,
                 text: '음식 추천 받기',
                 func: () {
-                  recommendFood();
+                  recommendFood(selectedData);
                 }),
                 SizedBox(height: ratio.height * 20),
             CustomButton(
                 horizonMargin: 20,
-                text: '해당 카테고리 생성하기',
+                text: '해당 음식 맘마 생성하기',
                 func: () {
+                  if(recommendedFood.isEmpty){
+                    CustomDialog(context: context, title: '음식 추천을 받으신 후\n이용해주세요!', buttonText: '확인', buttonCount: 1, func: (){
+                      Navigator.pop(context);
+                    });
+                    return;
+                  }
+                  CustomDialog(context: context, title: '해당 음식 맘마 생성으로\n이동하시겠습니까?', buttonText: '확인', buttonCount: 2, func: (){
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_){
+                      return MakeGroupScreen(type: selectedCategory, title: '${recommendedFood} 먹으러 갈사람!',);
+                    }));
+                  });
                 }),
                 SizedBox(height: ratio.height * 20),
             CustomButton(
                 horizonMargin: 20,
-                text: '해당 카테고리 참가하기',
+                text: '해당 카테고리 맘마 확인하기',
                 func: () {
+                  if(recommendedFood.isEmpty){
+                    CustomDialog(context: context, title: '음식 추천을 받으신 후\n이용해주세요!', buttonText: '확인', buttonCount: 1, func: (){
+                      Navigator.pop(context);
+                    });
+                    return;
+                  }
+                  CustomDialog(context: context, title: '해당 카테고리로\n이동하시겠습니까?', buttonText: '확인', buttonCount: 2, func: (){
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_){
+                      return HomeScreen(category: selectedCategory,);
+                    }));
+                  });
                 }),
                 Spacer()
           ],
@@ -88,21 +130,12 @@ class _recommendationState extends State<recommendation> {
     );
   }
 
-  void recommendFood() {
+  void recommendFood(List<Recommendation> data) {
     setState(() {
-      if (categoryToFoodMap.containsKey(selectedCategory)) {
-        final List<String> selectedFoodList =
-            categoryToFoodMap[selectedCategory]!;
-        if (selectedFoodList.isNotEmpty) {
-          final Random random = Random();
-          final int randomIndex = random.nextInt(selectedFoodList.length);
-          recommendedFood = selectedFoodList[randomIndex];
-        } else {
-          recommendedFood = '해당 카테고리의 음식 리스트가 비어있습니다.';
-        }
-      } else {
-        recommendedFood = '선택된 카테고리가 없습니다.';
-      }
+      Random random = Random();
+      int index = random.nextInt(data.length);
+      recommendedFood = data[index].name;
+      recommendedFoodImgPath = data[index].imgPath;
     });
   }
 }

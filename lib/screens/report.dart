@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_friend/config/custom_button.dart';
 import 'package:food_friend/config/custom_dialog.dart';
-import 'package:food_friend/config/firebase_instance.dart';
+
 import 'package:food_friend/main.dart';
 import 'package:food_friend/provider/user_provider.dart';
 import 'package:food_friend/widget/custom_textfield.dart';
@@ -36,7 +37,7 @@ class ReportScreen extends ConsumerWidget {
             CustomButton(text: '신고하기', func: () async {
               try{
                 final data = {'userId' : userIdController.text, 'reporter' : ref.watch(UserProvider).id};
-                await firestoreInstance.collection('report').doc().set(data);
+                await FirebaseFirestore.instance.collection('report').doc().set(data);
                 CustomDialog(context: context, title: '신고가 완료되었습니다!', buttonText: '확인', buttonCount: 1, func: (){Navigator.pop(context);});
               }catch(e){
                 CustomDialog(context: context, title: '예기치 못한 오류가 발생하였습니다.\n다시 시도하여 주세요.', buttonText: '확인', buttonCount: 1, func: (){Navigator.pop(context);});

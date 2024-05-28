@@ -16,14 +16,21 @@ import 'package:food_friend/screens/test.dart';
 import 'package:food_friend/widget/union_box.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
+  final String? category;
+  HomeScreen({Key? key, this.category = null,});
+  
   @override
   HomeScreenState createState() => HomeScreenState();
 }
 
 class HomeScreenState extends ConsumerState<HomeScreen> {
+
   @override
   void initState() {
     super.initState();
+    if(widget.category != null){
+      selectedCategory = widget.category!;
+    }
     ref.read(unionProvider.notifier).getData();
   }
 
@@ -102,12 +109,11 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                     //buttonText: isEnter(team: unionData[index], id : user.id),
                     union: unionData[index],
                     func: () async {
-                      if(unionData[index].userid == user.id){
-                        CustomDialog(barrierDismissible: false, context: context, title: '직접 생성하신 팀에는 참가하실 수 없습니다.', buttonText: '확인', buttonCount: 1, func: (){
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        });
-                        return;
+                      for(var enteredUser in unionData[index].users){
+                        if(enteredUser == user.id){
+                          CustomDialog(context: context, title: '이미 참가하신 팀입니다.', buttonText: '확인', buttonCount: 1, func: (){Navigator.pop(context);Navigator.pop(context);});
+                          return;
+                        }
                       }
                       ref.read(unionProvider.notifier).EnterUnion(union : unionData[index], context: context, userid : user.id);
                     });
@@ -188,7 +194,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
             title: Text('음식 추천'),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => recommendation()));
+                  MaterialPageRoute(builder: (context) => RecommendationScreen()));
             },
           ),
           ListTile(
@@ -207,14 +213,14 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                   MaterialPageRoute(builder: (context) => ReportScreen()));
             },
           ),
-          ListTile(
-            leading: Icon(Icons.report),
-            title: Text('Test'),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => TestPage()));
-            },
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.report),
+          //   title: Text('Test'),
+          //   onTap: () {
+          //     Navigator.push(context,
+          //         MaterialPageRoute(builder: (context) => TestPage()));
+          //   },
+          // ),
         ],
       ),
     );

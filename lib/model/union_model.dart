@@ -1,4 +1,3 @@
-import 'package:food_friend/model/firebase_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'union_model.freezed.dart';
@@ -8,7 +7,7 @@ part 'union_model.g.dart';
 class UnionModel with _$UnionModel {
 
   factory UnionModel({
-    required String id,
+    String? id,
     required String max,
     required String num,
     required String place,
