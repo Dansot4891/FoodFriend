@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_friend/config/custom_dialog.dart';
 import 'package:food_friend/config/firebase_instance.dart';
+import 'package:food_friend/model/firebase_model.dart';
 import 'package:food_friend/model/user_model.dart';
 import 'package:food_friend/screens/home.dart';
 import 'package:food_friend/screens/login.dart';
@@ -11,7 +12,7 @@ import 'package:food_friend/screens/login.dart';
 final UserProvider =
     StateNotifierProvider<UserNotifier, AppUser>((ref) => UserNotifier());
 
-class UserNotifier extends StateNotifier<AppUser> {
+class UserNotifier extends StateNotifier<AppUser> with FireBaseMixin {
   UserNotifier()
       : super(AppUser(
             dep: 'dep',
@@ -20,16 +21,30 @@ class UserNotifier extends StateNotifier<AppUser> {
             password: 'password',
             sex: 'sex'));
 
+  Future<List<AppUser>> testFunc() async {
+    final snapshot = await getDocs('user');
+
+    // 비밀번호 Null 처리
+    List<AppUser> users = snapshot.map((e) {
+      Map<String, dynamic> data = e.data() as Map<String, dynamic>;
+      
+      data.remove('password');
+
+      return AppUser.fromJson(data);
+    }).toList();
+    
+    print(users);
+    return users;
+  }
+
   // 회원가입(아이디 중복 검사 포함)
   Future signUpFunc({
     required AppUser user,
     required BuildContext context,
   }) async {
     try {
-      CollectionReference<Map<String, dynamic>> collectionReference =
-          FirebaseFirestore.instance.collection("user");
-      QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          await collectionReference.orderBy("id").get();
+      CollectionReference<Map<String, dynamic>> collectionReference = FirebaseFirestore.instance.collection("user");
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await collectionReference.orderBy("id").get();
       bool overlap = false;
       for (var doc in querySnapshot.docs) {
         if (doc.data()['id'] == user.id) {

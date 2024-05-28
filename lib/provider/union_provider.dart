@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_friend/config/custom_dialog.dart';
 import 'package:food_friend/config/firebase_instance.dart';
+import 'package:food_friend/model/firebase_model.dart';
 import 'package:food_friend/model/union_model.dart';
 import 'package:food_friend/screens/home.dart';
 
@@ -35,18 +36,14 @@ final unionSelectedProvider = Provider.family<List<UnionModel>, String>((ref, ca
 
 final unionProvider = StateNotifierProvider<UnionNotifier, List<UnionModel>>((ref) => UnionNotifier());
 
-class UnionNotifier extends StateNotifier<List<UnionModel>>{
+class UnionNotifier extends StateNotifier<List<UnionModel>> with FireBaseMixin{
   UnionNotifier():super([]);
 
   Future getData() async {
     try {
-      CollectionReference<Map<String, dynamic>> collectionReference = FirebaseFirestore.instance.collection("union");
-      QuerySnapshot<Map<String, dynamic>> querySnapshot = await collectionReference.orderBy("title").get();
-      List<UnionModel> data = [];
-      for (var doc in querySnapshot.docs) {
-        data.add(UnionModel.fromJson(doc.data()));
-      }
-      state = data;
+      final data = await getDocs('union');
+      final unionList = data.map((e) => UnionModel.fromJson(e.data() as Map<String, dynamic>)).toList();
+      state = unionList;
     } catch (e) {
       print(e);
     }
@@ -89,51 +86,50 @@ class UnionNotifier extends StateNotifier<List<UnionModel>>{
       });
       return;
     }
-      firestoreInstance
-          .collection('union')
-          .where('title', isEqualTo: union.title)
-          .where('userid', isEqualTo: union.userid)
-          .get()
-          .then((QuerySnapshot querySnapshot) {
-        querySnapshot.docs.forEach((doc) {
-          firestoreInstance.collection('union').doc(doc.id).update({
-            'title': union.title,
-            'dep': union.dep,
-            'max': union.max,
-            'num': newNum,
-            'place': union.place,
-            'time': union.time,
-            'type': union.type,
-            'userid': union.userid,
-            'users' : union.users,
-          }).then((_) {
-            CustomDialog(barrierDismissible: false, context: context, title: '참가가 완료되었습니다.', buttonText: '확인', buttonCount: 1, func: (){
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_){
-                return HomeScreen();
-              }));
-            });
-          }).catchError((error) {
-            print('데이터 업데이트 실패: $error');
-          });
-        });
-      }).catchError((error) {
-        print('변경 실패: $error');
-      });
+
+    final newData = UnionModel(id: union.id, max: union.max, num: newNum, place: union.place, time: union.time, title: union.title, type: union.type, userid: userid, dep: union.dep, users: union.users);
+
+    await updateDoc('union', documentId: union.id, data: newData.toJson());
+      // firestoreInstance
+      //     .collection('union')
+      //     .where('title', isEqualTo: union.title)
+      //     .where('userid', isEqualTo: union.userid)
+      //     .get()
+      //     .then((QuerySnapshot querySnapshot) {
+      //   querySnapshot.docs.forEach((doc) {
+      //     firestoreInstance.collection('union').doc(doc.id).update({
+      //       'title': union.title,
+      //       'dep': union.dep,
+      //       'max': union.max,
+      //       'num': newNum,
+      //       'place': union.place,
+      //       'time': union.time,
+      //       'type': union.type,
+      //       'userid': union.userid,
+      //       'users' : union.users,
+      //     }).then((_) {
+      //       CustomDialog(barrierDismissible: false, context: context, title: '참가가 완료되었습니다.', buttonText: '확인', buttonCount: 1, func: (){
+      //         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_){
+      //           return HomeScreen();
+      //         }));
+      //       });
+      //     }).catchError((error) {
+      //       print('데이터 업데이트 실패: $error');
+      //     });
+      //   });
+      // }).catchError((error) {
+      //   print('변경 실패: $error');
+      // });
   }
 
   Future changeUnion({
     required UnionModel union,
     required BuildContext context,
-    required String title
   }) async {
-      firestoreInstance
-          .collection('union')
-          .where('title', isEqualTo: title)
-          .where('userid', isEqualTo: union.userid)
-          .get()
-          .then((QuerySnapshot querySnapshot) {
+      firestoreInstance.collection('union').where('id', isEqualTo: union.id).get().then((QuerySnapshot querySnapshot) {
         querySnapshot.docs.forEach((doc) {
           firestoreInstance.collection('union').doc(doc.id).update({
+            'id' : union.id,
             'title': union.title,
             'dep': union.dep,
             'max': union.max,
@@ -160,20 +156,12 @@ class UnionNotifier extends StateNotifier<List<UnionModel>>{
 
   Future deleteData(UnionModel union, BuildContext context) async {
     try {
-      QuerySnapshot querySnapshot = await firestoreInstance
-          .collection('union')
-          .where('title', isEqualTo: union.title)
-          .where('userid', isEqualTo: union.userid)
-          .get();
-
-      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
-        await doc.reference.delete();
-        CustomDialog(context: context, title: '삭제가 완료되었습니다.', buttonText: '확인', buttonCount: 1, barrierDismissible: false, func: (){
+      await deleteDoc('union', documentId: union.id);
+      CustomDialog(context: context, title: '삭제가 완료되었습니다.', buttonText: '확인', buttonCount: 1, barrierDismissible: false, func: (){
           Navigator.push(context, MaterialPageRoute(builder: (_){
             return HomeScreen();
           }));
-        });
-      }
+      });
       print('삭제 완료');
     } catch (e) {
       print(e);

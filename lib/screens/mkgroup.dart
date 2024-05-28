@@ -158,19 +158,11 @@ class MakeGroupScreenState extends ConsumerState<MakeGroupScreen> {
     String place = _placeController.text;
     String type = food;
 
-    final union = UnionModel(type: type,title: title,max: max,num: '1',time: time,place: place,dep: user.dep,userid: user.id);
+    final docUnion = firestoreInstance.collection('union').doc();
+
+    final union = UnionModel(id: docUnion.id, type: type,title: title,max: max,num: '1',time: time,place: place,dep: user.dep,userid: user.id);
     print(union);
 
-    await firestoreInstance.collection('union').doc().set(UnionModel(
-            type: type,
-            title: title,
-            max: max,
-            num: '1',
-            time: time,
-            place: place,
-            dep: user.dep,
-            userid: user.id,
-            )
-        .toJson());
+    await docUnion.set(union.toJson());
   }
 }

@@ -53,71 +53,41 @@ class UnionBox extends StatelessWidget {
           SizedBox(
             height: ratio.height * 5,
           ),
-          Row(
-            children: [
-              Icon(Icons.badge_outlined),
-              SizedBox(
-                width: ratio.width * 5,
-              ),
-              Text(
-                '방장 학과 : ${union.dep}',
-                style: TextStyle(fontSize: 14),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Icon(Icons.groups_outlined),
-              SizedBox(
-                width: ratio.width * 5,
-              ),
-              Text(
-                "인원 : " + union.max + " / " + union.num,
-                style: TextStyle(fontSize: 14),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Icon(Icons.face),
-              SizedBox(
-                width: ratio.width * 5,
-              ),
-              Expanded(
-                child: Text(
-                  "참가 인원 : ${union.users.join(', ')}",
-                  style: TextStyle(fontSize: 14),
-                  maxLines: null,
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Icon(Icons.schedule_outlined),
-              SizedBox(
-                width: ratio.width * 5,
-              ),
-              Text(
-                "시간 : " + union.time,
-                style: TextStyle(fontSize: 14),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Icon(Icons.pin_drop_outlined),
-              SizedBox(
-                width: ratio.width * 5,
-              ),
-              Text(
-                "장소 : " + union.place,
-                style: TextStyle(fontSize: 14),
-              )
-            ],
-          ),
+          unionRow(
+              icon: Icon(Icons.star_border_outlined),
+              text: '방장 ID : ${union.userid}'),
+          unionRow(
+              icon: Icon(Icons.badge_outlined), text: '방장 학과 : ${union.dep}'),
+          unionRow(
+              icon: Icon(Icons.groups_outlined),
+              text: "인원 : " + union.num + " / " + union.max),
+          unionRow(
+              icon: Icon(Icons.face),
+              text: "참가 인원 : ${union.users.join(', ')}"),
+          unionRow(
+              icon: Icon(Icons.schedule_outlined), text: "시간 : " + union.time),
+          unionRow(
+              icon: Icon(Icons.pin_drop_outlined), text: "장소 : " + union.place),
         ],
       ),
+    );
+  }
+
+  Row unionRow({
+    required Icon icon,
+    required String text,
+  }) {
+    return Row(
+      children: [
+        icon,
+        SizedBox(
+          width: ratio.width * 5,
+        ),
+        Text(
+          text,
+          style: TextStyle(fontSize: 14),
+        ),
+      ],
     );
   }
 }

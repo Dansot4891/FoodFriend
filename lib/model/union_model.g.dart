@@ -8,6 +8,7 @@ part of 'union_model.dart';
 
 _$UnionModelImpl _$$UnionModelImplFromJson(Map<String, dynamic> json) =>
     _$UnionModelImpl(
+      id: json['id'] as String,
       max: json['max'] as String,
       num: json['num'] as String,
       place: json['place'] as String,
@@ -23,6 +24,7 @@ _$UnionModelImpl _$$UnionModelImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$UnionModelImplToJson(_$UnionModelImpl instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'max': instance.max,
       'num': instance.num,
       'place': instance.place,

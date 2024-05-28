@@ -20,6 +20,7 @@ UnionModel _$UnionModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UnionModel {
+  String get id => throw _privateConstructorUsedError;
   String get max => throw _privateConstructorUsedError;
   String get num => throw _privateConstructorUsedError;
   String get place => throw _privateConstructorUsedError;
@@ -43,7 +44,8 @@ abstract class $UnionModelCopyWith<$Res> {
       _$UnionModelCopyWithImpl<$Res, UnionModel>;
   @useResult
   $Res call(
-      {String max,
+      {String id,
+      String max,
       String num,
       String place,
       String time,
@@ -67,6 +69,7 @@ class _$UnionModelCopyWithImpl<$Res, $Val extends UnionModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? max = null,
     Object? num = null,
     Object? place = null,
@@ -78,6 +81,10 @@ class _$UnionModelCopyWithImpl<$Res, $Val extends UnionModel>
     Object? users = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       max: null == max
           ? _value.max
           : max // ignore: cast_nullable_to_non_nullable
@@ -127,7 +134,8 @@ abstract class _$$UnionModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String max,
+      {String id,
+      String max,
       String num,
       String place,
       String time,
@@ -149,6 +157,7 @@ class __$$UnionModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? max = null,
     Object? num = null,
     Object? place = null,
@@ -160,6 +169,10 @@ class __$$UnionModelImplCopyWithImpl<$Res>
     Object? users = null,
   }) {
     return _then(_$UnionModelImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       max: null == max
           ? _value.max
           : max // ignore: cast_nullable_to_non_nullable
@@ -204,7 +217,8 @@ class __$$UnionModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UnionModelImpl implements _UnionModel {
   _$UnionModelImpl(
-      {required this.max,
+      {required this.id,
+      required this.max,
       required this.num,
       required this.place,
       required this.time,
@@ -218,6 +232,8 @@ class _$UnionModelImpl implements _UnionModel {
   factory _$UnionModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UnionModelImplFromJson(json);
 
+  @override
+  final String id;
   @override
   final String max;
   @override
@@ -245,7 +261,7 @@ class _$UnionModelImpl implements _UnionModel {
 
   @override
   String toString() {
-    return 'UnionModel(max: $max, num: $num, place: $place, time: $time, title: $title, type: $type, userid: $userid, dep: $dep, users: $users)';
+    return 'UnionModel(id: $id, max: $max, num: $num, place: $place, time: $time, title: $title, type: $type, userid: $userid, dep: $dep, users: $users)';
   }
 
   @override
@@ -253,6 +269,7 @@ class _$UnionModelImpl implements _UnionModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UnionModelImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.max, max) || other.max == max) &&
             (identical(other.num, num) || other.num == num) &&
             (identical(other.place, place) || other.place == place) &&
@@ -266,7 +283,7 @@ class _$UnionModelImpl implements _UnionModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, max, num, place, time, title,
+  int get hashCode => Object.hash(runtimeType, id, max, num, place, time, title,
       type, userid, dep, const DeepCollectionEquality().hash(_users));
 
   @JsonKey(ignore: true)
@@ -285,7 +302,8 @@ class _$UnionModelImpl implements _UnionModel {
 
 abstract class _UnionModel implements UnionModel {
   factory _UnionModel(
-      {required final String max,
+      {required final String id,
+      required final String max,
       required final String num,
       required final String place,
       required final String time,
@@ -298,6 +316,8 @@ abstract class _UnionModel implements UnionModel {
   factory _UnionModel.fromJson(Map<String, dynamic> json) =
       _$UnionModelImpl.fromJson;
 
+  @override
+  String get id;
   @override
   String get max;
   @override

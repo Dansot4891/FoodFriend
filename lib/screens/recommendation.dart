@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:food_friend/config/custom_button.dart';
 import 'package:food_friend/main.dart';
 
 class recommendation extends StatefulWidget {
@@ -25,56 +26,63 @@ class _recommendationState extends State<recommendation> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        title: Text('음식 추천을 추천해드립니다!', style: TextStyle(color: Colors.white),),
+        title: Text(
+          '음식 추천을 추천해드립니다!',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.black,
         centerTitle: true,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/recomend2.jfif'),
-              fit: BoxFit.cover,
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height:ratio.height* 180,),
-              DropdownButton<String>(
-                value: selectedCategory,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedCategory = newValue!;
-                    recommendedFood = '';
-                  });
-                },
-                items: valueList.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                hint: Text('음식 카테고리 선택'),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: ratio.height * 180,
+            ),
+            DropdownButton<String>(
+              value: selectedCategory,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedCategory = newValue!;
+                  recommendedFood = '';
+                });
+              },
+              items: valueList.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              hint: Text('음식 카테고리 선택'),
+            ),
+            Spacer(),
+            if (recommendedFood.isNotEmpty)
+              Text(
+                '추천 음식: $recommendedFood',
+                style: TextStyle(fontSize: 28),
               ),
-              SizedBox(height:ratio.height* 250),
-              if (recommendedFood.isNotEmpty)
-                Text(
-                  '추천 음식: $recommendedFood',
-                  style: TextStyle(fontSize: 20),
-                ),
-              SizedBox(height:ratio.height* 20),
-              ElevatedButton(
-                onPressed: () {
+            SizedBox(height: ratio.height * 20),
+            CustomButton(
+                horizonMargin: 20,
+                text: '음식 추천 받기',
+                func: () {
                   recommendFood();
-                },
-                child: Text('음식 추천 받기', style: TextStyle(color: Colors.white),),
-                style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black,
-          ),
-              ),
-            ],
-          ),
+                }),
+                SizedBox(height: ratio.height * 20),
+            CustomButton(
+                horizonMargin: 20,
+                text: '해당 카테고리 생성하기',
+                func: () {
+                }),
+                SizedBox(height: ratio.height * 20),
+            CustomButton(
+                horizonMargin: 20,
+                text: '해당 카테고리 참가하기',
+                func: () {
+                }),
+                Spacer()
+          ],
         ),
       ),
     );
@@ -83,7 +91,8 @@ class _recommendationState extends State<recommendation> {
   void recommendFood() {
     setState(() {
       if (categoryToFoodMap.containsKey(selectedCategory)) {
-        final List<String> selectedFoodList = categoryToFoodMap[selectedCategory]!;
+        final List<String> selectedFoodList =
+            categoryToFoodMap[selectedCategory]!;
         if (selectedFoodList.isNotEmpty) {
           final Random random = Random();
           final int randomIndex = random.nextInt(selectedFoodList.length);

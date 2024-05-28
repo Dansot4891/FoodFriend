@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_friend/config/custom_dialog.dart';
 import 'package:food_friend/main.dart';
+import 'package:food_friend/model/union_model.dart';
 import 'package:food_friend/model/user_model.dart';
 import 'package:food_friend/provider/union_provider.dart';
 import 'package:food_friend/provider/user_provider.dart';
@@ -11,6 +12,7 @@ import 'package:food_friend/screens/mypage.dart';
 import 'package:food_friend/screens/recommendation.dart';
 import 'package:food_friend/screens/report.dart';
 import 'package:food_friend/screens/revise.dart';
+import 'package:food_friend/screens/test.dart';
 import 'package:food_friend/widget/union_box.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -97,6 +99,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
               itemCount: unionData.length,
               itemBuilder: (context, index) {
                 return UnionBox(
+                    //buttonText: isEnter(team: unionData[index], id : user.id),
                     union: unionData[index],
                     func: () async {
                       if(unionData[index].userid == user.id){
@@ -118,22 +121,18 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  // String getBackgroundImage(String category) {
-  //   switch (category) {
-  //     case '일식':
-  //       return 'assets/japanbg.jpg';
-  //     case '양식':
-  //       return 'assets/westback.jfif';
-  //     case '한식':
-  //       return 'assets/koreaback.jpg';
-  //     case '중식':
-  //       return 'assets/chinaback.jpg';
-  //     case '배달':
-  //       return 'assets/deliveryback.jpg';
-  //     default:
-  //       return 'assets/background.jpg';
-  //   }
-  // }
+  String isEnter({
+    required UnionModel team, 
+    required String id
+  }){
+    String entered = '참가';
+    for(dynamic userId in team.users){
+      if(userId == id){
+        entered = '취소';
+      }
+    }
+    return entered;
+  }
 
   Drawer DrawerWidget({required AppUser user}) {
     return Drawer(
@@ -206,6 +205,14 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => ReportScreen()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.report),
+            title: Text('Test'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => TestPage()));
             },
           ),
         ],

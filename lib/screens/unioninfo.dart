@@ -139,7 +139,7 @@ class UnionInfoScreenState extends ConsumerState<UnionInfoScreen> {
             child: Column(
               children: [
                 CustomButton(text: '수정하기', func: () async {
-                  final newData = UnionModel(max: maxController.text, num: numController.text, place: placeController.text, time: timeController.text, title: titleController.text, type: type, userid: widget.data.userid, dep: widget.data.dep);
+                  final newData = UnionModel(id: widget.data.id, max: maxController.text, num: numController.text, place: placeController.text, time: timeController.text, title: titleController.text, type: type, userid: widget.data.userid, dep: widget.data.dep);
                   if (_formkey.currentState!.validate()) {
                     if(int.parse(widget.data.num) > int.parse(maxController.text)){
                       CustomDialog(context: context, title: '최대 인원과 현재 인원을 확인해주세요.', buttonText: '확인', buttonCount: 1, func: (){
@@ -147,7 +147,7 @@ class UnionInfoScreenState extends ConsumerState<UnionInfoScreen> {
                       });
                       return;
                     }
-                    ref.read(unionProvider.notifier).changeUnion(union : newData, context: context, title: widget.data.title);
+                    ref.read(unionProvider.notifier).changeUnion(union : newData, context: context,);
                   }
                 }, horizonMargin: 20,),
                 SizedBox(height: ratio.height * 20,),
