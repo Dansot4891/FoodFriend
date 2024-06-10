@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_friend/config/custom_button.dart';
-import 'package:food_friend/config/custom_dialog.dart';
+import 'package:food_friend/widget/custom_button.dart';
+import 'package:food_friend/widget/custom_dialog.dart';
 
 import 'package:food_friend/main.dart';
 import 'package:food_friend/provider/user_provider.dart';

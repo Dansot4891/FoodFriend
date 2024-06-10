@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:food_friend/config/custom_dialog.dart';
+import 'package:food_friend/widget/custom_dialog.dart';
 import 'package:food_friend/main.dart';
 import 'package:food_friend/model/union_model.dart';
 

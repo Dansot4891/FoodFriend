@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_friend/config/custom_dialog.dart';
+import 'package:food_friend/widget/custom_dialog.dart';
 import 'package:food_friend/config/validator.dart';
 import 'package:food_friend/main.dart';
 import 'package:food_friend/model/user_model.dart';

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_friend/config/custom_dialog.dart';
+import 'package:food_friend/widget/custom_dialog.dart';
 import 'package:food_friend/model/firebase_model.dart';
 import 'package:food_friend/model/user_model.dart';
 import 'package:food_friend/screens/home.dart';
