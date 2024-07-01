@@ -17,18 +17,20 @@ import 'package:food_friend/widget/union_box.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   final String? category;
-  HomeScreen({Key? key, this.category = null,});
-  
+  HomeScreen({
+    Key? key,
+    this.category = null,
+  });
+
   @override
   HomeScreenState createState() => HomeScreenState();
 }
 
 class HomeScreenState extends ConsumerState<HomeScreen> {
-
   @override
   void initState() {
     super.initState();
-    if(widget.category != null){
+    if (widget.category != null) {
       selectedCategory = widget.category!;
     }
     ref.read(unionProvider.notifier).getData();
@@ -36,42 +38,22 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
 
   final List<String> allCategories = ['전체', '일식', '양식', '한식', '중식', '배달'];
   String selectedCategory = '전체';
+
   @override
   Widget build(BuildContext context) {
     final AppUser user = ref.watch(UserProvider);
     final unionData = ref.watch(unionSelectedProvider(selectedCategory));
-    return Scaffold(
-      backgroundColor: Color(0xFFFDFDFD),
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Text(
-          'FF에 오신걸 환영합니다!',
-          style: TextStyle(color: Colors.white),
+
+    if (ref.watch(unionSelectedProvider("전체")).length == 0)
+      return homeLayout(
+        child: Center(
+          child: CircularProgressIndicator(),
         ),
-        centerTitle: true,
-        backgroundColor: Colors.black,
-        actions: [
-          IconButton(
-              icon: Icon(
-                Icons.forward,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                CustomDialog(
-                    context: context,
-                    title: '로그아웃 하시겠습니까?',
-                    buttonText: '확인',
-                    buttonCount: 2,
-                    func: () {
-                      ref.read(UserProvider.notifier).LogoutFunc();
-                      Navigator.pushReplacement(
-                          context, MaterialPageRoute(builder: (_) => Login()));
-                    });
-              })
-        ],
-      ),
-      drawer: DrawerWidget(user: user),
-      body: Padding(
+        user: user,
+      );
+
+    return homeLayout(
+      child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
@@ -99,7 +81,10 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                 hint: Text('음식 카테고리 선택'),
               ),
             ),
-            Divider(thickness: 1, color: Colors.black,),
+            Divider(
+              thickness: 1,
+              color: Colors.black,
+            ),
             SizedBox(height: ratio.height * 20),
             Expanded(
                 child: ListView.separated(
@@ -109,13 +94,24 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                     //buttonText: isEnter(team: unionData[index], id : user.id),
                     union: unionData[index],
                     func: () async {
-                      for(var enteredUser in unionData[index].users){
-                        if(enteredUser == user.id){
-                          CustomDialog(context: context, title: '이미 참가하신 팀입니다.', buttonText: '확인', buttonCount: 1, func: (){Navigator.pop(context);Navigator.pop(context);});
+                      for (var enteredUser in unionData[index].users) {
+                        if (enteredUser == user.id) {
+                          CustomDialog(
+                              context: context,
+                              title: '이미 참가하신 팀입니다.',
+                              buttonText: '확인',
+                              buttonCount: 1,
+                              func: () {
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              });
                           return;
                         }
                       }
-                      ref.read(unionProvider.notifier).EnterUnion(union : unionData[index], context: context, userid : user.id);
+                      ref.read(unionProvider.notifier).EnterUnion(
+                          union: unionData[index],
+                          context: context,
+                          userid: user.id);
                     });
               },
               separatorBuilder: (BuildContext context, int index) =>
@@ -124,16 +120,52 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
           ],
         ),
       ),
+      user: user,
     );
   }
 
-  String isEnter({
-    required UnionModel team, 
-    required String id
-  }){
+  Scaffold homeLayout({
+    required Widget child,
+    required AppUser user,
+  }) {
+    return Scaffold(
+        backgroundColor: Color(0xFFFDFDFD),
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.white),
+          title: Text(
+            'FF에 오신걸 환영합니다!',
+            style: TextStyle(color: Colors.white),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.black,
+          actions: [
+            IconButton(
+                icon: Icon(
+                  Icons.forward,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  CustomDialog(
+                      context: context,
+                      title: '로그아웃 하시겠습니까?',
+                      buttonText: '확인',
+                      buttonCount: 2,
+                      func: () {
+                        ref.read(UserProvider.notifier).LogoutFunc();
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (_) => Login()));
+                      });
+                })
+          ],
+        ),
+        drawer: DrawerWidget(user: user),
+        body: child);
+  }
+
+  String isEnter({required UnionModel team, required String id}) {
     String entered = '참가';
-    for(dynamic userId in team.users){
-      if(userId == id){
+    for (dynamic userId in team.users) {
+      if (userId == id) {
         entered = '취소';
       }
     }
@@ -193,8 +225,10 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
             leading: Icon(Icons.local_dining),
             title: Text('음식 추천'),
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => RecommendationScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => RecommendationScreen()));
             },
           ),
           ListTile(

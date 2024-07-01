@@ -18,12 +18,6 @@ class RecommendationScreen extends ConsumerStatefulWidget {
 class _RecommendationScreenState extends ConsumerState<RecommendationScreen> {
   final valueList = ['한식', '일식', '중식', '양식'];
 
-  @override
-  void initState() {
-    super.initState();
-    ref.read(recommendProvider.notifier).fetchData();
-  }
-
   String selectedCategory = '한식';
   String recommendedFood = '';
   String recommendedFoodImgPath = '';

@@ -150,7 +150,7 @@ class MakeGroupScreenState extends ConsumerState<MakeGroupScreen> {
                         final union = UnionModel(type: food,title: _titleController.text,max: _maxController.text,num: '1', time: _timeController.text, place: _placeController.text,dep: user.dep, userid: user.id, users: [user.id]);
                         await ref.read(unionProvider.notifier).makeGroup(union : union);
                         //await makeGroup(user);
-                        CustomDialog(context: context, title: '생성이 완료되었습니다', buttonText: '확인', buttonCount: 1, func: (){
+                        CustomDialog(barrierDismissible: false, context: context, title: '생성이 완료되었습니다', buttonText: '확인', buttonCount: 1, func: (){
                           Navigator.push(context, MaterialPageRoute(builder: (_){
                             return HomeScreen();
                           }));

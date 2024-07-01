@@ -1,31 +1,33 @@
-import 'dart:math';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_friend/model/firebase_model.dart';
 import 'package:food_friend/model/recommend_model.dart';
+import 'package:food_friend/repository/recommend_repository.dart';
 
+// 랜덤 선택 추천
 final selectedRecommendProvider = Provider.family<List<Recommendation>, String>((ref, type){
   final recommendData = ref.watch(recommendProvider);
   List<Recommendation> selectedData = recommendData.where((e) => e.type == type).toList();
   return selectedData;
 });
 
-final recommendProvider = StateNotifierProvider<RecommendNotifier, List<Recommendation>>((ref) => RecommendNotifier());
+// 전체 추천
+final recommendProvider = StateNotifierProvider<RecommendNotifier, List<Recommendation>>((ref) {
+  final RecommendRepository repo = ref.watch(recommendRepositoryProvider);
+
+  return RecommendNotifier(repository: repo);
+});
 
 class RecommendNotifier extends StateNotifier<List<Recommendation>> with FireBaseMixin{
-  RecommendNotifier():super([]);
-
-  Future<void> fetchData() async {
-    final snapshot = await getDocs('recommend');
-    state = snapshot.map((e) => Recommendation.fromJson(e.data() as Map<String, dynamic>)).toList();
+  final RecommendRepository repository;
+  RecommendNotifier({
+    required this.repository
+  }):super([]){
+    getData();
   }
 
-
-  Recommendation randomData(String type){
-    Random random = Random();
-    List<Recommendation> selectedData = state.where((e) => e.type == type).toList();
-    int index = random.nextInt(selectedData.length);
-    return selectedData[index];
+  Future<void> getData() async {
+    final resp = await repository.getData();
+    state = resp;
   }
 
   Future<void> makeData() async {
