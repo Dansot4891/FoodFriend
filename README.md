@@ -19,16 +19,6 @@ Flutter / FireBase
 ------------------------------------------------------------
 #### 화면 구성
 <img src="https://github.com/user-attachments/assets/5c537314-b864-4879-b966-eb55c6b1871c.png" width="200" height="400"/>
-![image 2](https://github.com/user-attachments/assets/4346a817-1fbf-4f66-b104-fbc1664d5626)
-![image 3](https://github.com/user-attachments/assets/69c4a85e-1a62-41bf-93ca-582a2db331b4)
-![image 4](https://github.com/user-attachments/assets/99fde853-bd23-4bb9-995d-60fe6887770e)
-![image 5](https://github.com/user-attachments/assets/1fc6cbe7-ad5c-41e5-b6e2-34e68077b9d8)
-![image 6](https://github.com/user-attachments/assets/839b9e4a-de80-4504-a8f9-1ce626caebcb)
-![image 7](https://github.com/user-attachments/assets/bb32aa6d-e099-4a1f-a321-4570ac204460)
-![image 9](https://github.com/user-attachments/assets/692ea3bf-c2f3-4d53-96e9-74b9d1fea106)
-![image 10](https://github.com/user-attachments/assets/837132e8-4fc6-4ca8-ae28-036837c506ff)
-![image 11](https://github.com/user-attachments/assets/1fcc5638-108c-4392-b72c-f814b5440cb9)
-![image 14](https://github.com/user-attachments/assets/a7104339-f7e6-4d99-99cf-7b491435b746)
 
 ------------------------------------------------------------
 #### 기능
