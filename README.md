@@ -18,7 +18,25 @@ Flutter / FireBase
 + 사용자 노쇼를 위한 신고 기능 및 음식 추천 기능을 구현하였습니다.
 ------------------------------------------------------------
 #### 화면 구성
-<img src="https://github.com/user-attachments/assets/5c537314-b864-4879-b966-eb55c6b1871c.png" width="200" height="400"/>
+<p align="center">
+   <img src="https://github.com/user-attachments/assets/5c537314-b864-4879-b966-eb55c6b1871c.png" align="center" width="32%">
+   <img src="https://github.com/user-attachments/assets/4346a817-1fbf-4f66-b104-fbc1664d5626" align="center" width="32%">
+   <img src="https://github.com/user-attachments/assets/69c4a85e-1a62-41bf-93ca-582a2db331b4" align="center" width="32%">
+</p>
+<p align="center">
+   <img src="https://github.com/user-attachments/assets/5c537314-b864-4879-b966-eb55c6b1871c.png" align="center" width="32%">
+   <img src="https://github.com/user-attachments/assets/1fc6cbe7-ad5c-41e5-b6e2-34e68077b9d8" align="center" width="32%">
+   <img src="https://github.com/user-attachments/assets/839b9e4a-de80-4504-a8f9-1ce626caebcb" align="center" width="32%">
+</p>
+<p align="center">
+   <img src="https://github.com/user-attachments/assets/bb32aa6d-e099-4a1f-a321-4570ac204460" align="center" width="32%">
+   <img src="https://github.com/user-attachments/assets/692ea3bf-c2f3-4d53-96e9-74b9d1fea106" align="center" width="32%">
+   <img src="https://github.com/user-attachments/assets/837132e8-4fc6-4ca8-ae28-036837c506ff" align="center" width="32%">
+</p>
+<p align="center">
+   <img src="https://github.com/user-attachments/assets/1fcc5638-108c-4392-b72c-f814b5440cb9" align="center" width="32%">
+   <img src="https://github.com/user-attachments/assets/a7104339-f7e6-4d99-99cf-7b491435b746" align="center" width="32%">
+</p>
 
 ------------------------------------------------------------
 #### 기능
