@@ -1,4 +1,5 @@
-####FoodFriend
+#### FoodFriend
+![image](https://github.com/user-attachments/assets/332bc7ff-f8d6-491b-88b9-c0d7280cbeb4)
 ------------------------------------------------------------
 처음 시작해보는 Flutter를 이용한 개인 프로젝트
 가천대학교 학교내에서 같이 밥 먹을 사람을 구하는 앱
