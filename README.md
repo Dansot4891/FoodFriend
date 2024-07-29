@@ -18,7 +18,7 @@ Flutter / FireBase
 + 사용자 노쇼를 위한 신고 기능 및 음식 추천 기능을 구현하였습니다.
 ------------------------------------------------------------
 #### 화면 구성
-![image 1](https://github.com/user-attachments/assets/5c537314-b864-4879-b966-eb55c6b1871c)
+<img scr="https://github.com/user-attachments/assets/5c537314-b864-4879-b966-eb55c6b1871c.png" width="200", height ="400"/>
 ![image 2](https://github.com/user-attachments/assets/4346a817-1fbf-4f66-b104-fbc1664d5626)
 ![image 3](https://github.com/user-attachments/assets/69c4a85e-1a62-41bf-93ca-582a2db331b4)
 ![image 4](https://github.com/user-attachments/assets/99fde853-bd23-4bb9-995d-60fe6887770e)
