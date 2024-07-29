@@ -19,12 +19,12 @@ Flutter / FireBase
 ------------------------------------------------------------
 #### 화면 구성
 <p align="center">
-   <img src="https://github.com/user-attachments/assets/5c537314-b864-4879-b966-eb55c6b1871c.png" align="center" width="32%">
+   <img src="https://github.com/user-attachments/assets/5c537314-b864-4879-b966-eb55c6b1871c" align="center" width="32%">
    <img src="https://github.com/user-attachments/assets/4346a817-1fbf-4f66-b104-fbc1664d5626" align="center" width="32%">
    <img src="https://github.com/user-attachments/assets/69c4a85e-1a62-41bf-93ca-582a2db331b4" align="center" width="32%">
 </p>
 <p align="center">
-   <img src="https://github.com/user-attachments/assets/5c537314-b864-4879-b966-eb55c6b1871c.png" align="center" width="32%">
+   <img src="https://github.com/user-attachments/assets/5c537314-b864-4879-b966-eb55c6b1871c" align="center" width="32%">
    <img src="https://github.com/user-attachments/assets/1fc6cbe7-ad5c-41e5-b6e2-34e68077b9d8" align="center" width="32%">
    <img src="https://github.com/user-attachments/assets/839b9e4a-de80-4504-a8f9-1ce626caebcb" align="center" width="32%">
 </p>
